@@ -1,0 +1,21 @@
+1단계 : 페이지이동을 할 수 있는가?
+	1) a href = ""
+	2) location.herf = ""
+	3) form action = ""
+		<input ...> <input type="submit">
+		
+2단계 : 페이지 이동과 요청값 처리
+	1) a href = "페이지명?요청키=요청값"
+	2) location.href ="페이지명?요청키=요청값"
+	3) form action="페이지명"
+		<input name = "요청키" value="요청값">
+		<input type="submit">
+		
+3단계 : 요청값 받기 : request.getParameter("요청키")
+	1) 다른페이지에서
+	2) 같은페이지에서
+	3) 문자열 데이터 초기값 처리
+	4) 숫자형 데이터 초기값 처리
+	5) 요청값 객체로 만들기
+	
+4단계 : 요청값 전달을 Dao 모듈과 연동해서 처리..
