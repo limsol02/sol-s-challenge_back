@@ -8,7 +8,8 @@
 <fmt:requestEncoding value="utf-8"/>     
 <!DOCTYPE html>
 <%--
-2) 설문 조사 양식: 다양한 주제에 대한 사용자의 선호도를 묻는 라디오 버튼 기반 설문 조사를 만드세요. 각 질문은 여러 선택지를 가지며, 사용자는 하나만 선택할 수 있습니다.
+
+
  --%>
 <html>
 <head>
@@ -31,61 +32,71 @@
 		
 		--%>	
 	});
+	function goPage(){
+		location.href="a00_req_res_basic_rev.jsp";
+	}
+	
+	function goPage2(){
+		location.href="a00_req_res_basic_rev.jsp?greet=hello";
+	}
 </script>
 </head>
 
 <body>
 <div class="jumbotron text-center">
-  <h2 data-toggle="modal" data-target="#exampleModalCenter">선호하는 볼거리</h2>
+
+  <h2 >1단계 페이지 이동</h2>
+	<a href="a00_req_res_basic_rev.jsp"> 기본link로 이동 </a>
+  <h3 onclick="goPage()"> js명령어로 이동(클릭) </h3>
+  <form action="a00_req_res_basic_rev.jsp">
+  		<input type="submit" value="폼으로 이동"/>
+  </form>
+  
+  
+  <h2 >2단계 페이지 이동+요청값처리</h2>
+	<a href="a00_req_res_basic_rev.jsp?greet=hello"> 기본link로 이동 </a>
+  <h3 onclick="goPage2()"> js명령어로 이동(클릭) </h3>
+  <form action="a00_req_res_basic_rev.jsp">
+  		<input type="text" name ="greet" value="hello"/>
+  		<input type="submit" value="폼으로 이동"/>
+  </form>
 
 </div>
 <div class="container">
-	<form id="frm01" class="form"  method="post">
-	
-	제일 흥미로운 주제 선택 <br>
-		  	<div class="form-check-inline">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="favorite" value="드라마">드라마
-		  </label>
-		</div>
-		<div class="form-check-inline">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="favorite" value="애니메이션">애니메이션
-		  </label>
-		</div>
-		<div class="form-check-inline disabled">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="favorite" value="영화">영화
-		  </label>
-		</div>
-		<div class="form-check-inline disabled">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="favorite" value="다큐">다큐
-		  </label>
-		</div>
-			<button class="btn btn-info" type="submit">선택전송</button>
+	<h2>3단계 같은 페이지에서 요청값 처리(action 생략)</h2>
+	<form id="frm01" class="form"  method="get">
+  	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+	    <input name="bev" class="form-control mr-sm-2" placeholder="주문할 음료 입력" />
+	    <input name="price" class="form-control mr-sm-2" placeholder="가격 입력" />
+	    <button class="btn btn-info" type="submit">Search</button>
+ 	</nav>
 	</form>
-	<%
-	String favorite = request.getParameter("favorite");
-	if(favorite==null) favorite="";
-	%>
-	
    <table class="table table-hover table-striped">
-   	<col width="25%">
    	<col width="50%">
-   	<col width="25%">
- 
+   	<col width="50%">
+   
     <thead>
     
       <tr class="table-success text-center">
-        <th>선호하는 장르</th>
-        
+      <%
+      // 요청값 형식 ? key(name값)=value값 => request.getParameter("key(name값)")
+      String bev = request.getParameter("bev");
+      if(bev==null)bev=""; 
+      // 같은 페이지 요청값에서 반드시 처리
+      
+      String priceStr = request.getParameter("price");
+      if(priceStr==null) priceStr="0";
+      int price = Integer.parseInt(priceStr);
+      %>
+        <th><%=bev%>,<%=bev.equals("아이스 아메리카노")%></th>
+        <th><%=price%>,<%=price+1000%></th>
+       
       </tr>
     </thead>	
     <tbody>
-    	<tr>
-    	<td><%=favorite %></td>
-    	
+    	<tr><td></td><td></td><td></td><td></td><td></td></tr>
+    	<tr><td></td><td></td><td></td><td></td><td></td></tr>
+    	<tr><td></td><td></td><td></td><td></td><td></td></tr>
     </tbody>
 	</table>    
     

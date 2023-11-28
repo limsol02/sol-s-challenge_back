@@ -64,7 +64,7 @@ public class PreparedStmtDao {
 
 	public List<Dept> getDeptList(String dname, String loc) {
 	      List<Dept> dlist = new ArrayList<Dept>();
-	      String sql = "select deptno,dname,loc " + "from dept " + "where dname like ? " + " and loc like ? "
+	      String sql = "select deptno,dname,loc " + "from dept01 " + "where dname like ? " + " and loc like ? "
 	            + " order by deptno ";
 	      // try(객체처리-연결;대화;결과){} : try resource 구문 파일이나 DB연결 자동 자원해제..
 	      try (Connection con = DBCon.con(); PreparedStatement pstmt = con.prepareStatement(sql);) {

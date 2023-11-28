@@ -1,21 +1,52 @@
-1단계 : 페이지이동을 할 수 있는가?
+1단계 [ 페이지이동을 할 수 있는가? ]
 	1) a href = ""
 	2) location.herf = ""
 	3) form action = ""
 		<input ...> <input type="submit">
 		
-2단계 : 페이지 이동과 요청값 처리
+2단계 [ 페이지 이동과 요청값 처리 ]
 	1) a href = "페이지명?요청키=요청값"
 	2) location.href ="페이지명?요청키=요청값"
 	3) form action="페이지명"
 		<input name = "요청키" value="요청값">
 		<input type="submit">
 		
-3단계 : 요청값 받기 : request.getParameter("요청키")
-	1) 다른페이지에서
-	2) 같은페이지에서
-	3) 문자열 데이터 초기값 처리
+3단계 [ 요청값 받기 ]
+	= request.getParameter("요청키") = ${param.요청키}
+	
+	1) 다른페이지에서 action="이동할 페이지"
+	
+	2) 같은페이지에서 action="" action값을 생략하거나 공백으로 두면 어떻게될까?
+		같은 페이지에서 요청값을 받기 때문에 request.getParameter("요청키") 하여야한다.
+		
+		- 초기 로딩 페이지
+		- 요값을 받은 페이지
+		구분해서 로직 처리를 하여야한다.
+	
+	3) 문자열 데이터 초기값 처리(초기는 무조건 문자열)
+		기본 요청값은 모두다 문자열이거나 요청값이 없을 때는 null 할당..
+		- 같은 페이지에서 요청값 처리는 null일 때는 대비해서 default데이터를 설정하여야한다.
+		String fruit = request.getParameter("fruit")
+		if(fruit == null) fruit="";
+	
 	4) 숫자형 데이터 초기값 처리
+		- String noStr = request.getParameter("no");
+		
+		[처리방식 1]
+		int no=0;
+		if(noStr!=null) no = Integer.parseInt(noSrt) 
+		
+		[처리방식 2]
+		if(noStr==null) noStr="0";
+		int no = Integer.parseInt(noStr);
+		==> 숫자형 문자열을 숫자로 변환처리..
+		
 	5) 요청값 객체로 만들기
 	
 4단계 : 요청값 전달을 Dao 모듈과 연동해서 처리..
+
+## 에러 상황에 대비해서 해야할 내용..
+1. 모든 코드는 흐름이 있고, 해당 흐름대로 데이터가 처리되는지를 log로 확인하면서 
+	처리하여야 한다.
+	--> 소스 중간중간 system.out.println("") // java
+	--> js 경우 console.log() 로 확인

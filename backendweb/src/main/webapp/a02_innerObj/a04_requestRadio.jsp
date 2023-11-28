@@ -8,7 +8,8 @@
 <fmt:requestEncoding value="utf-8"/>     
 <!DOCTYPE html>
 <%--
-2) 설문 조사 양식: 다양한 주제에 대한 사용자의 선호도를 묻는 라디오 버튼 기반 설문 조사를 만드세요. 각 질문은 여러 선택지를 가지며, 사용자는 하나만 선택할 수 있습니다.
+
+
  --%>
 <html>
 <head>
@@ -36,38 +37,59 @@
 
 <body>
 <div class="jumbotron text-center">
-  <h2 data-toggle="modal" data-target="#exampleModalCenter">선호하는 볼거리</h2>
+  <h2 data-toggle="modal" data-target="#exampleModalCenter">타이틀</h2>
 
 </div>
 <div class="container">
 	<form id="frm01" class="form"  method="post">
+	<select name="dname" class="form-control mr-sm-2">
+		<option value="">전체</option>
+		<option>인사</option>
+		<option>회계</option>
+		<option>재무</option>
+		<option>기획</option>
+	</select>
 	
-	제일 흥미로운 주제 선택 <br>
+	<select name="fruits" size="2" multiple="multiple" class="form-control mr-sm-2">
+	<%--
+	multiple="multiple"는 요청값 받는 곳에서 request.getParameterValues 써서 받아야됨
+	 --%>
+		<option>사과</option>
+		<option>바나나</option>
+		<option>딸기</option>
+		<option>오렌지</option>
+	</select>
+	
+	선택과목1개만 선택 : <br>
 		  	<div class="form-check-inline">
 		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="favorite" value="드라마">드라마
+		    <input type="radio" class="form-check-input" name="subject" value="java">java
 		  </label>
 		</div>
 		<div class="form-check-inline">
 		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="favorite" value="애니메이션">애니메이션
+		    <input type="radio" class="form-check-input" name="subject" value="javascript">javascript
 		  </label>
 		</div>
 		<div class="form-check-inline disabled">
 		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="favorite" value="영화">영화
-		  </label>
-		</div>
-		<div class="form-check-inline disabled">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="favorite" value="다큐">다큐
+		    <input type="radio" class="form-check-input" name="subject" value="jsp">jsp
 		  </label>
 		</div>
 			<button class="btn btn-info" type="submit">선택전송</button>
 	</form>
 	<%
-	String favorite = request.getParameter("favorite");
-	if(favorite==null) favorite="";
+	String subject = request.getParameter("subject");
+	if(subject==null) subject="";
+	String dname = request.getParameter("dname");
+	if(dname==null) dname="";
+	String []fruits = request.getParameterValues("fruits");
+	StringBuffer sbfruits = new StringBuffer();
+	if(fruits!=null){
+		for(String fruit : fruits){
+			sbfruits.append(fruit + " ");
+		}
+	}
 	%>
 	
    <table class="table table-hover table-striped">
@@ -78,13 +100,17 @@
     <thead>
     
       <tr class="table-success text-center">
-        <th>선호하는 장르</th>
+        <th>부서</th>
+        <th>과목</th>
+        <th>과일들</th>
         
       </tr>
     </thead>	
     <tbody>
     	<tr>
-    	<td><%=favorite %></td>
+    	<td><%=dname %></td>
+    	<td><%=subject %></td>
+    	<td><%=sbfruits%></td></tr>
     	
     </tbody>
 	</table>    

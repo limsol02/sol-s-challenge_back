@@ -8,7 +8,7 @@
 <fmt:requestEncoding value="utf-8"/>     
 <!DOCTYPE html>
 <%--
-2) 설문 조사 양식: 다양한 주제에 대한 사용자의 선호도를 묻는 라디오 버튼 기반 설문 조사를 만드세요. 각 질문은 여러 선택지를 가지며, 사용자는 하나만 선택할 수 있습니다.
+3) 영화 장르 선택기: 사용자가 선호하는 영화 장르를 select박스로 멀티선택하고, 그에 따라 추천 영화 목록을 보여주는 페이지를 작성하세요.
  --%>
 <html>
 <head>
@@ -36,56 +36,82 @@
 
 <body>
 <div class="jumbotron text-center">
-  <h2 data-toggle="modal" data-target="#exampleModalCenter">선호하는 볼거리</h2>
+  <h2 data-toggle="modal" data-target="#exampleModalCenter">좋아하는 영화 장르</h2>
 
 </div>
 <div class="container">
 	<form id="frm01" class="form"  method="post">
 	
-	제일 흥미로운 주제 선택 <br>
-		  	<div class="form-check-inline">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="favorite" value="드라마">드라마
-		  </label>
-		</div>
-		<div class="form-check-inline">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="favorite" value="애니메이션">애니메이션
-		  </label>
-		</div>
-		<div class="form-check-inline disabled">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="favorite" value="영화">영화
-		  </label>
-		</div>
-		<div class="form-check-inline disabled">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="favorite" value="다큐">다큐
-		  </label>
-		</div>
-			<button class="btn btn-info" type="submit">선택전송</button>
+	<select name="movie" size="2" multiple="multiple" class="form-control mr-sm-2">
+	
+		<option value="0">액션</option>
+        <option value="1">로맨스</option>
+        <option value="2">공포</option>
+        <option value="3">코믹</option>
+	</select>
+	<button class="btn btn-info" type="submit">장르선택완료</button>
 	</form>
 	<%
-	String favorite = request.getParameter("favorite");
-	if(favorite==null) favorite="";
+	String[] movies = request.getParameterValues("movie");
+	StringBuffer sb = new StringBuffer();
+	if(movies!=null){
+		for(String m01 :movies){
+		switch(m01){
+		case "0" : sb.append("액션 "); break;
+		case "1" : sb.append("로멘스 "); break;
+		case "2" : sb.append("공포 "); break;
+		default : sb.append("코믹"); break;
+		}
+		}
+	}
+	
+
+	String[] mname = new String[2]; 
+       
+    if (movies != null && movies.length >= 2) {
+    	 int idx1 = Integer.parseInt(movies[0]); 
+         int idx2 = Integer.parseInt(movies[1]); 
+        // 첫 번째 장르에 따른 추천 영화
+        switch (idx1) {
+            case 0: mname[0] = "킬빌, 미션임파서블"; break;
+            case 1: mname[0] = "어바웃타임, 러브액츄얼리"; break;
+            case 2: mname[0] = "링, 주온"; break;
+            case 3: mname[0] = "극한직업, 나홀로집에"; break;
+            default: mname[0] = ""; break;
+        }
+
+        // 두 번째 장르에 따른 추천 영화
+        switch (idx2) {
+            case 0: mname[1] = "킬빌, 미션임파서블"; break;
+            case 1: mname[1] = "어바웃타임, 러브액츄얼리"; break;
+            case 2: mname[1] = "링, 주온"; break;
+            case 3: mname[1] = "극한직업, 나홀로집에"; break;
+            default: mname[1] = ""; break;
+        }
+    }
 	%>
 	
    <table class="table table-hover table-striped">
-   	<col width="25%">
-   	<col width="50%">
-   	<col width="25%">
- 
+   	<col width="33%">
+   	<col width="33%">
+   	<col width="34%">
+   
     <thead>
     
       <tr class="table-success text-center">
-        <th>선호하는 장르</th>
-        
+        <th>선호 장르</th>
+        <th>선호도에 따른 추천영화1</th>
+        <th>선호도에 따른 추천영화2</th>
+ 
       </tr>
     </thead>	
     <tbody>
     	<tr>
-    	<td><%=favorite %></td>
+    	<td><%=sb%></td>        
+    	<td><%=mname[0]%></td>        
+    	<td><%=mname[1]%></td>        
     	
+    	</tr>	
     </tbody>
 	</table>    
     

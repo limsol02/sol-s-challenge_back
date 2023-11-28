@@ -1,3 +1,4 @@
+<%@page import="backendweb.z01_vo.Survey"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     import="java.util.*"
@@ -8,7 +9,8 @@
 <fmt:requestEncoding value="utf-8"/>     
 <!DOCTYPE html>
 <%--
-2) 설문 조사 양식: 다양한 주제에 대한 사용자의 선호도를 묻는 라디오 버튼 기반 설문 조사를 만드세요. 각 질문은 여러 선택지를 가지며, 사용자는 하나만 선택할 수 있습니다.
+### 2. 요청값 VO객체 예제로 조사자명과 선호하는 음식 종류, 평점 선택하게 하고, 결과를 서버에 저장하는 설문조사 페이지 만들기.
+
  --%>
 <html>
 <head>
@@ -36,56 +38,50 @@
 
 <body>
 <div class="jumbotron text-center">
-  <h2 data-toggle="modal" data-target="#exampleModalCenter">선호하는 볼거리</h2>
+  <h2 data-toggle="modal" data-target="#exampleModalCenter">설문조사</h2>
 
 </div>
 <div class="container">
 	<form id="frm01" class="form"  method="post">
-	
-	제일 흥미로운 주제 선택 <br>
-		  	<div class="form-check-inline">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="favorite" value="드라마">드라마
-		  </label>
-		</div>
-		<div class="form-check-inline">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="favorite" value="애니메이션">애니메이션
-		  </label>
-		</div>
-		<div class="form-check-inline disabled">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="favorite" value="영화">영화
-		  </label>
-		</div>
-		<div class="form-check-inline disabled">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="favorite" value="다큐">다큐
-		  </label>
-		</div>
-			<button class="btn btn-info" type="submit">선택전송</button>
+  	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+	    <input name="name" class="form-control mr-sm-2" placeholder="이름" />
+	    <input name="food" class="form-control mr-sm-2" placeholder="음식명" />
+	    <input name="grade" class="form-control mr-sm-2" placeholder="평점(5.0만점)" />
+	    <button class="btn btn-info" type="submit">제출</button>
+ 	</nav>
 	</form>
 	<%
-	String favorite = request.getParameter("favorite");
-	if(favorite==null) favorite="";
-	%>
+	String name = request.getParameter("name");
+	if(name==null) name="";
 	
+	String food = request.getParameter("food");
+	if(food==null) food="";
+	
+	String gradeStr = request.getParameter("grade");
+	double grade = 0.0;
+	if(gradeStr!=null) grade = Double.parseDouble(gradeStr);
+	
+	Survey s01 = new Survey (name,food,grade);
+	%>
    <table class="table table-hover table-striped">
-   	<col width="25%">
-   	<col width="50%">
-   	<col width="25%">
- 
+   	<col width="33%">
+   	<col width="33%">
+   	<col width="34%">
+   
     <thead>
     
       <tr class="table-success text-center">
-        <th>선호하는 장르</th>
-        
+        <th>조사자</th>
+        <th>음식이름</th>
+        <th>평점</th>
       </tr>
     </thead>	
     <tbody>
     	<tr>
-    	<td><%=favorite %></td>
-    	
+    	<td><%=s01.getName() %></td>
+    	<td><%=s01.getFood() %></td>
+    	<td><%=s01.getGrade() %></td>
+    	</tr>
     </tbody>
 	</table>    
     

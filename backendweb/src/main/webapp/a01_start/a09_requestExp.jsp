@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     import="java.util.*"
+    import = "backendweb.z01_vo.BSPlayer"
     %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -8,7 +9,8 @@
 <fmt:requestEncoding value="utf-8"/>     
 <!DOCTYPE html>
 <%--
-2) 설문 조사 양식: 다양한 주제에 대한 사용자의 선호도를 묻는 라디오 버튼 기반 설문 조사를 만드세요. 각 질문은 여러 선택지를 가지며, 사용자는 하나만 선택할 수 있습니다.
+
+
  --%>
 <html>
 <head>
@@ -33,58 +35,73 @@
 	});
 </script>
 </head>
+<%
+String player = request.getParameter("player");
+if(player==null) player="";
 
+String gameCntStr = request.getParameter("gameCnt");
+double gameCnt = 0;
+if(gameCntStr!=null) gameCnt = Double.parseDouble(gameCntStr);
+
+String hitCntStr = request.getParameter("hitCnt");
+double hitCnt = 0;
+if(hitCntStr!=null) hitCnt = Double.parseDouble(hitCntStr);
+
+double batAvg = hitCnt==0 ? 0 : gameCnt/hitCnt;
+BSPlayer bp = new BSPlayer(player,gameCnt,hitCnt);
+
+/*
+class BSPlayer
+	private String player;
+	private double gameCnt;
+	private double hitCnt;
+*/
+%>
 <body>
 <div class="jumbotron text-center">
-  <h2 data-toggle="modal" data-target="#exampleModalCenter">선호하는 볼거리</h2>
+  <h2 data-toggle="modal" data-target="#exampleModalCenter">타율계산</h2>
 
 </div>
+<%--
+# 입력값을 받은 내용을 객체로 사용하는 이유는 해당 데이터를 한꺼번에
+매개변수로 객체로 전송하기 위하여 사용한다.
+ --%>
 <div class="container">
 	<form id="frm01" class="form"  method="post">
-	
-	제일 흥미로운 주제 선택 <br>
-		  	<div class="form-check-inline">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="favorite" value="드라마">드라마
-		  </label>
-		</div>
-		<div class="form-check-inline">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="favorite" value="애니메이션">애니메이션
-		  </label>
-		</div>
-		<div class="form-check-inline disabled">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="favorite" value="영화">영화
-		  </label>
-		</div>
-		<div class="form-check-inline disabled">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="favorite" value="다큐">다큐
-		  </label>
-		</div>
-			<button class="btn btn-info" type="submit">선택전송</button>
+  	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+	    <input name="player" type="text" class="form-control mr-sm-2" placeholder="선수명입력" />
+	    <input name="gameCnt" type="number" class="form-control mr-sm-2" placeholder="타석입력(숫자)" />
+	    <input name="hitCnt" type="number" class="form-control mr-sm-2" placeholder="안타수입력(숫자)" />
+	    <button class="btn btn-info" type="submit">Search</button>
+ 	</nav>
 	</form>
-	<%
-	String favorite = request.getParameter("favorite");
-	if(favorite==null) favorite="";
-	%>
-	
+	<%--
+	name 값을 설정하고, 요청값을 받아서 하단에 타율을 출력하세여
+	타율 = 안타수/타석 실수로 받아야 합니다.
+	 --%>
    <table class="table table-hover table-striped">
    	<col width="25%">
-   	<col width="50%">
    	<col width="25%">
- 
+   	<col width="25%">
+   	<col width="25%">
+   
     <thead>
     
       <tr class="table-success text-center">
-        <th>선호하는 장르</th>
+        <th>선수명</th>
+        <th>타석수</th>
+        <th>안타수</th>
+        <th>타율</th>
         
       </tr>
     </thead>	
     <tbody>
     	<tr>
-    	<td><%=favorite %></td>
+    	<td><%=bp.getPlayer()%></td>
+    	<td><%=bp.getGameCnt() %></td>
+    	<td><%=bp.getHitCnt()%></td>
+    	<td><%=bp.getHitAgv()%></td>
+    	<tr>
     	
     </tbody>
 	</table>    
