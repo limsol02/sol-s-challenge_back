@@ -103,6 +103,10 @@ td {
 				<input type="checkbox" name="name" value="마길동" class="form-control mr-sm-2"/>마길동
 				<button class="btn btn-info" type="submit">입력</button>
 				<%--
+				
+				 --%>
+				
+				<%--
 				ex) a03_requestValues.jsp 만들고
 				form 하위에
 				text로 등록한 물건명을 여러개 등록할 수 있게 하고

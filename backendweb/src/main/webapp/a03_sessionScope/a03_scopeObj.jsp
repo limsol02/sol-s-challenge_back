@@ -1,3 +1,5 @@
+<%@page import="backendweb.z01_vo.Member"%>
+<%@page import="backendweb.z01_vo.Person"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     import="java.util.*"
@@ -8,7 +10,19 @@
 <fmt:requestEncoding value="utf-8"/>     
 <!DOCTYPE html>
 <%--
-
+# 객체 설정하여 처리
+1. 각 session scope 변수 뿐만 아니라 객체도 설정할 수 있다.
+2. 형식
+	1) 설정하기
+	pageContext.setAttribute("객체명", new 객체());
+	
+	2) 가져오기
+		객체참조명 = (객체타입)pageContext.getAttribute("객체명");
+		참조명.메서드();
+		${객체명.property명}
+		
+	[ps] property명 객체의 set/get 메서드에 대한 호출명으로 getXXX()메서드인 경우
+	${객체명.XXX}로 set/get을 뺀 메서드명(property명)으로 el의 경우 호출이 가능하다.
 
  --%>
 <html>
@@ -34,86 +48,69 @@
 	});
 </script>
 </head>
-
+<%
+pageContext.setAttribute("p01", new Person("홍길동",25,"서울"));
+%>
 <body>
 <div class="jumbotron text-center">
-  <h2 data-toggle="modal" data-target="#exampleModalCenter">타이틀</h2>
+  <h2 data-toggle="modal" data-target="#exampleModalCenter">객체처리</h2>
+<%
+Person p01= (Person)pageContext.getAttribute("p01");
 
+pageContext.setAttribute("m01", 
+		new Member(1,"김길동","himan","7777","관리자",10000));
+
+Member m01 =(Member)pageContext.getAttribute("mem");
+%>
+<%--
+#주의
+property는 속성(필드)가 아니고, 메서드의 get/set에서 
+해당 이름만 뽑ㅈ아서 첫자를 소문자로 처리한 것이다
+getName() ==> Name()==> Name==> name(property)
+ --%>
+ 
+ <h3>이름: <%=p01.getName() %>, ${p01.name}</h3>
+ <h3>나이: <%=p01.getAge() %>, ${p01.age}</h3>
+ <h3>사는곳: <%=p01.getLoc() %>, ${pageScope.p01.loc}</h3>
+ <%--${pageScope.p01.loc} : 스코프 여러개라 구분할때 필요 --%>
+ 
+ <%--ex)member 객체 설정 및 호출, el태그로도 호출처리 --%>
 </div>
 <div class="container">
 	<form id="frm01" class="form"  method="post">
-	<select name="dname" class="form-control mr-sm-2">
-		<option value="">전체</option>
-		<option>인사</option>
-		<option>회계</option>
-		<option>재무</option>
-		<option>기획</option>
-	</select>
-	
-	<select name="fruits" size="2" multiple="multiple" class="form-control mr-sm-2">
-	<%--
-	multiple="multiple"는 요청값 받는 곳에서 request.getParameterValues 써서 받아야됨
-	 --%>
-		<option>사과</option>
-		<option>바나나</option>
-		<option>딸기</option>
-		<option>오렌지</option>
-	</select>
-	
-	선택과목1개만 선택 : <br>
-		  	<div class="form-check-inline">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="subject" value="java">java
-		  </label>
-		</div>
-		<div class="form-check-inline">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="subject" value="javascript">javascript
-		  </label>
-		</div>
-		<div class="form-check-inline disabled">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="subject" value="jsp">jsp
-		  </label>
-		</div>
-			<button class="btn btn-info" type="submit">선택전송</button>
+  	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+	    <input class="form-control mr-sm-2" placeholder="제목" />
+	    <input class="form-control mr-sm-2" placeholder="내용" />
+	    <button class="btn btn-info" type="submit">Search</button>
+ 	</nav>
 	</form>
-	<%
-	String subject = request.getParameter("subject");
-	if(subject==null) subject="";
-	String dname = request.getParameter("dname");
-	if(dname==null) dname="";
-	String []fruits = request.getParameterValues("fruits");
-	StringBuffer sbfruits = new StringBuffer();
-	if(fruits!=null){
-		for(String fruit : fruits){
-			sbfruits.append(fruit + " ");
-		}
-	}
-	%>
-	<%--
-	type="radio"는 동일한 name일 때, 단일 선택 : request.getParameter("name")
-	type="checkbox"는 동일한 name이지만 여러개 선택 : request.getParameterValue("names") 
-	 --%>
    <table class="table table-hover table-striped">
-   	<col width="25%">
-   	<col width="50%">
-   	<col width="25%">
- 
+   	<col width="15%">
+   	<col width="15%">
+   	<col width="15%">
+   	<col width="15%">
+   	<col width="20%">
+   	<col width="20%">
     <thead>
     
       <tr class="table-success text-center">
-        <th>부서</th>
-        <th>과목</th>
-        <th>과일들</th>
-        
+        <th>번호</th>
+        <th>이름</th>
+        <th>아이디</th>
+        <th>비밀번호</th>
+        <th>권한</th>
+        <th>포인트</th>
       </tr>
     </thead>	
     <tbody>
     	<tr>
-    	<td><%=dname %></td>
-    	<td><%=subject %></td>
-    	<td><%=sbfruits%></td></tr>
+    	<td><%=m01.getMno() %>,${mem.mno}</td>
+    	<td><%=m01.getName() %>,${mem.name}</td>
+    	<td><%=m01.getId() %>,${mem.id}</td>
+    	<td><%=m01.getPwd()%>,${mem.pwd}</td>
+    	<td><%=m01.getAuth() %>,${mem.auth}</td>
+    	<td><%=m01.getPoint() %>,${mem.point}</td>
+    	</tr>
     	
     </tbody>
 	</table>    

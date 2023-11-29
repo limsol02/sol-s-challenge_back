@@ -34,87 +34,55 @@
 	});
 </script>
 </head>
+<%
+String id = request.getParameter("id");
+if(id==null) id="";
 
+String passwordStr = request.getParameter("password");
+int password = 0;
+if(passwordStr!=null) password=Integer.parseInt(passwordStr);
+
+if(!(id.equals(" ")&&password==0)){
+	if(id.equals("himan")&&password==7777){
+			response.sendRedirect("a10_main.jsp");
+	}else{
+			response.sendRedirect("a11_logfailure.jsp");
+	}
+}
+%>
 <body>
 <div class="jumbotron text-center">
-  <h2 data-toggle="modal" data-target="#exampleModalCenter">타이틀</h2>
+  <h2 data-toggle="modal" data-target="#exampleModalCenter">로그인페이지</h2>
 
 </div>
 <div class="container">
 	<form id="frm01" class="form"  method="post">
-	<select name="dname" class="form-control mr-sm-2">
-		<option value="">전체</option>
-		<option>인사</option>
-		<option>회계</option>
-		<option>재무</option>
-		<option>기획</option>
-	</select>
-	
-	<select name="fruits" size="2" multiple="multiple" class="form-control mr-sm-2">
-	<%--
-	multiple="multiple"는 요청값 받는 곳에서 request.getParameterValues 써서 받아야됨
-	 --%>
-		<option>사과</option>
-		<option>바나나</option>
-		<option>딸기</option>
-		<option>오렌지</option>
-	</select>
-	
-	선택과목1개만 선택 : <br>
-		  	<div class="form-check-inline">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="subject" value="java">java
-		  </label>
-		</div>
-		<div class="form-check-inline">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="subject" value="javascript">javascript
-		  </label>
-		</div>
-		<div class="form-check-inline disabled">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="subject" value="jsp">jsp
-		  </label>
-		</div>
-			<button class="btn btn-info" type="submit">선택전송</button>
+  	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+	    <input name="id" class="form-control mr-sm-2" placeholder="아이디 입력" />
+	    <input name="password" type="password" class="form-control mr-sm-2" placeholder="비밀번호 입력" />
+	    <button class="btn btn-info" type="submit">로그인</button>
+ 	</nav>
 	</form>
-	<%
-	String subject = request.getParameter("subject");
-	if(subject==null) subject="";
-	String dname = request.getParameter("dname");
-	if(dname==null) dname="";
-	String []fruits = request.getParameterValues("fruits");
-	StringBuffer sbfruits = new StringBuffer();
-	if(fruits!=null){
-		for(String fruit : fruits){
-			sbfruits.append(fruit + " ");
-		}
-	}
-	%>
-	<%--
-	type="radio"는 동일한 name일 때, 단일 선택 : request.getParameter("name")
-	type="checkbox"는 동일한 name이지만 여러개 선택 : request.getParameterValue("names") 
-	 --%>
    <table class="table table-hover table-striped">
-   	<col width="25%">
+   	<col width="10%">
    	<col width="50%">
-   	<col width="25%">
- 
+   	<col width="15%">
+   	<col width="15%">
+   	<col width="10%">
     <thead>
     
       <tr class="table-success text-center">
-        <th>부서</th>
-        <th>과목</th>
-        <th>과일들</th>
-        
+        <th>번호</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>작성일</th>
+        <th>조회</th>
       </tr>
     </thead>	
     <tbody>
-    	<tr>
-    	<td><%=dname %></td>
-    	<td><%=subject %></td>
-    	<td><%=sbfruits%></td></tr>
-    	
+    	<tr><td></td><td></td><td></td><td></td><td></td></tr>
+    	<tr><td></td><td></td><td></td><td></td><td></td></tr>
+    	<tr><td></td><td></td><td></td><td></td><td></td></tr>
     </tbody>
 	</table>    
     

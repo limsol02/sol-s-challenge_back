@@ -42,6 +42,9 @@
 		==> 숫자형 문자열을 숫자로 변환처리..
 		
 	5) 요청값 객체로 만들기
+		여러가지 데이터 유형 받아서 dao나 다른 모듈에 전달할 객체를 구성
+		class 선언
+		객체 생성..
 	
 4단계 : 요청값 전달을 Dao 모듈과 연동해서 처리..
 
@@ -50,3 +53,21 @@
 	처리하여야 한다.
 	--> 소스 중간중간 system.out.println("") // java
 	--> js 경우 console.log() 로 확인
+	
+	만약 변수가 없다면? null
+	이 변수를 만들어 주는 기본코드 형식을 점검
+	각 코드의 오타 없는지 점검..
+	ex) 요청값 처리 에러
+	String noStr = request.getParameter("no");
+	if(noStr==null) noStr="0";
+	int no = Integer.parseInt(noStr);
+	
+	<form>
+		<input type = "text" name="no" value="25"/>
+		<input type="submit"/>
+	</form>
+
+2. 에러가 나면 반드시 에러 정리 노트에 정리해놓는다.
+	1) 실제 에러가 나온 상황을 정리해놓고,
+	2) 에러는 처리를 어떻게 하는지?
+	3) 원인/결과/다음부터 어떻게 이 에러를 찾을지? 방지할지?? 

@@ -8,7 +8,40 @@
 <fmt:requestEncoding value="utf-8"/>     
 <!DOCTYPE html>
 <%--
+# 내장 객체
+1. session scope 관련 객체
+	jsp에서는 변수/객체를 저장하는 시간적 범위를 추가하여 저장할 수 있다.
+	이것을 session scope에 의한 저장이라고 한다.
+	[int, double, String, Person] ==> 크기과 유형 
+	쉽게 말하면, 브라우저(클라이언트)/웹 서버-톰캣(서버)과의 관계에서
+	위 데이터를 임시로 어느 범위까지 저장하느냐를 처리해주는 것을 말한다.
+	각, 범위에 대하여 jsp 내장객체로 저장처리를 설정하게 해준다.
+	
+	1) pageContext : 페이지 설정 범위
+		-> 해당 페이지에서만 사용가능(자바클래스 처럼 그 페이지에서만 사용가능)
+	
+	2) request : 요청값 처리
+		-> 요청값을 처리하는 범위까지 사용하는 주로 forward 기능메서드로 처리된 범위를 말한다.
+		-> forward 기능메서드 = request,response를 함께 전달하는 메서드.
+		[ex] A.jsp에서 request범위로 데이터 저장한 후, 
+			forward()로 B.jsp를 호출하면 해당 페이지에서 request범위로 
+			설정한 데이터는 사용가능하다.
+	
+	3) session : session 설정 범위
+		-> 같은 웹 브라우저와 웹 서버가 연결되어 있을 때, 데이터를 저장하는 범위를 말하는데, 
+			이 범위는 둘 중에 하나가 연결을 끊는 순간 사라진다.
+		[ex] A.jsp 에서 세션으로 저장한 경우
+			같은 브라우저가 띄워져 있고, 서버도 실행되어 있는 순간
+			다른 어떤 페이지로 이동 하더라도 저장된 데이터를 가져올 수 있다. 
+	
+	4) application : 어플리케이션 즉, 웹 서버 설정범위
+		-> 브라우저 상관없이 웹서버가 재가동하지 않는 한 저장되는 범위를 말한다.
+		
+	# 기본형식
+	XXXX.setAttribute("key",값(변수/객체)); -> 저장
+	XXXX.getAttribute("key"); -> 가져오기
 
+2. 기타객체
 
  --%>
 <html>
@@ -42,79 +75,32 @@
 </div>
 <div class="container">
 	<form id="frm01" class="form"  method="post">
-	<select name="dname" class="form-control mr-sm-2">
-		<option value="">전체</option>
-		<option>인사</option>
-		<option>회계</option>
-		<option>재무</option>
-		<option>기획</option>
-	</select>
-	
-	<select name="fruits" size="2" multiple="multiple" class="form-control mr-sm-2">
-	<%--
-	multiple="multiple"는 요청값 받는 곳에서 request.getParameterValues 써서 받아야됨
-	 --%>
-		<option>사과</option>
-		<option>바나나</option>
-		<option>딸기</option>
-		<option>오렌지</option>
-	</select>
-	
-	선택과목1개만 선택 : <br>
-		  	<div class="form-check-inline">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="subject" value="java">java
-		  </label>
-		</div>
-		<div class="form-check-inline">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="subject" value="javascript">javascript
-		  </label>
-		</div>
-		<div class="form-check-inline disabled">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="subject" value="jsp">jsp
-		  </label>
-		</div>
-			<button class="btn btn-info" type="submit">선택전송</button>
+  	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+	    <input class="form-control mr-sm-2" placeholder="제목" />
+	    <input class="form-control mr-sm-2" placeholder="내용" />
+	    <button class="btn btn-info" type="submit">Search</button>
+ 	</nav>
 	</form>
-	<%
-	String subject = request.getParameter("subject");
-	if(subject==null) subject="";
-	String dname = request.getParameter("dname");
-	if(dname==null) dname="";
-	String []fruits = request.getParameterValues("fruits");
-	StringBuffer sbfruits = new StringBuffer();
-	if(fruits!=null){
-		for(String fruit : fruits){
-			sbfruits.append(fruit + " ");
-		}
-	}
-	%>
-	<%--
-	type="radio"는 동일한 name일 때, 단일 선택 : request.getParameter("name")
-	type="checkbox"는 동일한 name이지만 여러개 선택 : request.getParameterValue("names") 
-	 --%>
    <table class="table table-hover table-striped">
-   	<col width="25%">
+   	<col width="10%">
    	<col width="50%">
-   	<col width="25%">
- 
+   	<col width="15%">
+   	<col width="15%">
+   	<col width="10%">
     <thead>
     
       <tr class="table-success text-center">
-        <th>부서</th>
-        <th>과목</th>
-        <th>과일들</th>
-        
+        <th>번호</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>작성일</th>
+        <th>조회</th>
       </tr>
     </thead>	
     <tbody>
-    	<tr>
-    	<td><%=dname %></td>
-    	<td><%=subject %></td>
-    	<td><%=sbfruits%></td></tr>
-    	
+    	<tr><td></td><td></td><td></td><td></td><td></td></tr>
+    	<tr><td></td><td></td><td></td><td></td><td></td></tr>
+    	<tr><td></td><td></td><td></td><td></td><td></td></tr>
     </tbody>
 	</table>    
     

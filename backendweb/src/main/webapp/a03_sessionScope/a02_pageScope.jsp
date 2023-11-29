@@ -7,10 +7,6 @@
 <c:set var="path" value="${pageContext.request.contextPath }"/>
 <fmt:requestEncoding value="utf-8"/>     
 <!DOCTYPE html>
-<%--
-
-
- --%>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -35,85 +31,71 @@
 </script>
 </head>
 
+<%
+// page scope로 저장처리
+pageContext.setAttribute("name", "홍길동");
+pageContext.setAttribute("age", 25);
+// ex) page scope로 물견명, 가격, 갯수를 설정하고 아래에 출력하세요.
+String pname = request.getParameter("pname");
+if(pname==null) pname="";
+
+String priceStr = request.getParameter("price");
+int price=0;
+if(priceStr!=null)  price=Integer.parseInt(priceStr);
+
+String cntStr = request.getParameter("cnt");
+int cnt=0;
+if(cntStr!=null)  cnt=Integer.parseInt(cntStr);
+
+pageContext.setAttribute("pname",pname);
+pageContext.setAttribute("price",price);
+pageContext.setAttribute("cnt",cnt);
+
+%>
 <body>
 <div class="jumbotron text-center">
-  <h2 data-toggle="modal" data-target="#exampleModalCenter">타이틀</h2>
+  <h2 data-toggle="modal" data-target="#exampleModalCenter">page scope</h2>
+  <h3>name : <%=pageContext.getAttribute("name") %>,${name} </h3>
+  <h3>age : <%=pageContext.getAttribute("age") %>, ${age} </h3>
+  <h3>age+10 : <%=(Integer)pageContext.getAttribute("age") +10%>, ${age+10}</h3>
 
 </div>
 <div class="container">
 	<form id="frm01" class="form"  method="post">
-	<select name="dname" class="form-control mr-sm-2">
-		<option value="">전체</option>
-		<option>인사</option>
-		<option>회계</option>
-		<option>재무</option>
-		<option>기획</option>
-	</select>
-	
-	<select name="fruits" size="2" multiple="multiple" class="form-control mr-sm-2">
-	<%--
-	multiple="multiple"는 요청값 받는 곳에서 request.getParameterValues 써서 받아야됨
-	 --%>
-		<option>사과</option>
-		<option>바나나</option>
-		<option>딸기</option>
-		<option>오렌지</option>
-	</select>
-	
-	선택과목1개만 선택 : <br>
-		  	<div class="form-check-inline">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="subject" value="java">java
-		  </label>
-		</div>
-		<div class="form-check-inline">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="subject" value="javascript">javascript
-		  </label>
-		</div>
-		<div class="form-check-inline disabled">
-		  <label class="form-check-label">
-		    <input type="radio" class="form-check-input" name="subject" value="jsp">jsp
-		  </label>
-		</div>
-			<button class="btn btn-info" type="submit">선택전송</button>
+  	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+	    <input name="pname" class="form-control mr-sm-2" placeholder="물건명" />
+	    <input name="price" class="form-control mr-sm-2" placeholder="가격" />
+	    <input name="cnt" class="form-control mr-sm-2" placeholder="갯수" />
+	    <button class="btn btn-info" type="submit">Search</button>
+ 	</nav>
 	</form>
-	<%
-	String subject = request.getParameter("subject");
-	if(subject==null) subject="";
-	String dname = request.getParameter("dname");
-	if(dname==null) dname="";
-	String []fruits = request.getParameterValues("fruits");
-	StringBuffer sbfruits = new StringBuffer();
-	if(fruits!=null){
-		for(String fruit : fruits){
-			sbfruits.append(fruit + " ");
-		}
-	}
-	%>
-	<%--
-	type="radio"는 동일한 name일 때, 단일 선택 : request.getParameter("name")
-	type="checkbox"는 동일한 name이지만 여러개 선택 : request.getParameterValue("names") 
-	 --%>
    <table class="table table-hover table-striped">
    	<col width="25%">
-   	<col width="50%">
    	<col width="25%">
- 
+   	<col width="25%">
+   	<col width="25%">
     <thead>
     
       <tr class="table-success text-center">
-        <th>부서</th>
-        <th>과목</th>
-        <th>과일들</th>
-        
+        <th>물건명</th>
+        <th>가격</th>
+        <th>갯수</th>
+        <th>총계</th>
+       
       </tr>
     </thead>	
     <tbody>
     	<tr>
-    	<td><%=dname %></td>
-    	<td><%=subject %></td>
-    	<td><%=sbfruits%></td></tr>
+    	<td>${pname}</td>
+    	<%--만약 정확하게 가져오고 싶다면 
+    	${pageScope.pname} = page scope
+    	${requestScope.pname} = request scope
+    	로 여러 스코프가 겹칠때는 범위를 명시적으로 구분하여 사용한다.
+    	${범위scope.변수} 이용! --%>
+    	<td>${price}</td>
+    	<td>${cnt}</td>
+    	<td>${price*cnt}</td>
+    	</tr>
     	
     </tbody>
 	</table>    
