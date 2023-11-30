@@ -75,6 +75,10 @@ getName() ==> Name()==> Name==> name(property)
  <%--${pageScope.p01.loc} : 스코프 여러개라 구분할때 필요 --%>
  
  <%--ex)member 객체 설정 및 호출, el태그로도 호출처리 --%>
+ <%--
+ ${mem.id} : el을 활용하면 객체 할당 없이 바로 사용 객체가 없더라고
+ nullpointer 예외 발생하지않는 장점이 있다.
+  --%>
 </div>
 <div class="container">
 	<form id="frm01" class="form"  method="post">
