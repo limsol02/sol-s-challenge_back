@@ -16,6 +16,7 @@ import backendweb.z01_vo.Member;
 
 /*
 import="backendweb.d01_dao.PreparedStmtDao"
+import="backendweb.d01_dao.*"
 import="backendweb.z01_vo.*"
 */
 public class PreparedStmtDao {
