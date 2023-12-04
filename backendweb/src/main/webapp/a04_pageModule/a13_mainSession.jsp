@@ -9,21 +9,7 @@
 <fmt:requestEncoding value="utf-8"/>     
 <!DOCTYPE html>
 <%--
-id : @@@
-pwd : @@@ [로그인]
-==> 요청값을 받아 맞으면 a13_main.jsp
-	그렇지않으면 a14_error.jsp를 forward로 처리해보자
 
-# login DB 연동 처리 순서
-1. sql 작성
-2. VO작성/ 확인
-3. Dao
-4. 화면 구성
-5. 요청값 처리
-6. Dao 호출
-7. login 여부에 따라 다시 로그인
-8. 해당 로그인 member 있을 때, session처리
-9. 로그인 메인 페이지 이동 
 
  --%>
 <html>
@@ -43,6 +29,11 @@ pwd : @@@ [로그인]
 <script src="https://developers.google.com/web/ilt/pwa/working-with-the-fetch-api" type="text/javascript"></script>
 <script type="text/javascript">
    $(document).ready(function(){
+	   var id = "${mem.id}"
+	   if(id==""){
+		   alert("로그인 하여야합니다.")
+		   location.href = 'a12_login_DB.jsp';
+	   }
       <%-- 
       
       --%>   
@@ -52,34 +43,43 @@ pwd : @@@ [로그인]
 
 <body>
 <div class="jumbotron text-center">
-  <h2>로그인페이지</h2>
-<%
-
-String id = request.getParameter("id");
-
-
-String pwd = request.getParameter("pwd");
-
-
-if(id!=null&&pwd!=null){
-	if(id.equals("himan")&&pwd.equals("7777")){%>
-		<jsp:forward page="a13_main.jsp"/>
-	<% }else{%>
-		<jsp:forward page="a14_error.jsp"/>
-	<% }
-}
-%>
+  <h2>${mem.id}님 로그인성공</h2>
+	<p class="text-rigth"><input type="button" 
+	class="btn btn-info" value="${mem.name}님 로그인 중"></p>
 </div>
 <div class="container">
    <form id="frm01" class="form"  method="post">
      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-       <input class="form-control mr-sm-2" placeholder="아이디 입력" name="id" />
-       <input type="password" class="form-control mr-sm-2" placeholder="비밀번호 입력" name="pwd" />
-       <button class="btn btn-info" type="submit">로그인</button>
-      
+       <input class="form-control mr-sm-2" placeholder="제목" />
+       <input class="form-control mr-sm-2" placeholder="내용" />
+       <button class="btn btn-info" type="submit">Search</button>
+       <button class="btn btn-success" 
+          data-toggle="modal" data-target="#exampleModalCenter"
+           type="button">등록</button>
     </nav>
    </form>
-   
+   <table class="table table-hover table-striped">
+      <col width="10%">
+      <col width="50%">
+      <col width="15%">
+      <col width="15%">
+      <col width="10%">
+    <thead>
+    
+      <tr class="table-success text-center">
+        <th>번호</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>작성일</th>
+        <th>조회</th>
+      </tr>
+    </thead>   
+    <tbody>
+       <tr><td></td><td></td><td></td><td></td><td></td></tr>
+       <tr><td></td><td></td><td></td><td></td><td></td></tr>
+       <tr><td></td><td></td><td></td><td></td><td></td></tr>
+    </tbody>
+   </table>    
     
 </div>
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

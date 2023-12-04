@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"
     import="java.util.*"
     import="backendweb.z01_vo.*"
+    import="backendweb.d01_dao.*"
     %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -9,21 +10,9 @@
 <fmt:requestEncoding value="utf-8"/>     
 <!DOCTYPE html>
 <%--
-id : @@@
-pwd : @@@ [로그인]
-==> 요청값을 받아 맞으면 a13_main.jsp
-	그렇지않으면 a14_error.jsp를 forward로 처리해보자
-
-# login DB 연동 처리 순서
-1. sql 작성
-2. VO작성/ 확인
-3. Dao
-4. 화면 구성
-5. 요청값 처리
-6. Dao 호출
-7. login 여부에 따라 다시 로그인
-8. 해당 로그인 member 있을 때, session처리
-9. 로그인 메인 페이지 이동 
+번호를 입력하세요 (1~4번)
+3번 입력 : 정답입니다.
+그외 오답입니다. 
 
  --%>
 <html>
@@ -52,34 +41,39 @@ pwd : @@@ [로그인]
 
 <body>
 <div class="jumbotron text-center">
-  <h2>로그인페이지</h2>
-<%
+  <h2>타이틀</h2>
 
-String id = request.getParameter("id");
-
-
-String pwd = request.getParameter("pwd");
-
-
-if(id!=null&&pwd!=null){
-	if(id.equals("himan")&&pwd.equals("7777")){%>
-		<jsp:forward page="a13_main.jsp"/>
-	<% }else{%>
-		<jsp:forward page="a14_error.jsp"/>
-	<% }
-}
-%>
 </div>
 <div class="container">
    <form id="frm01" class="form"  method="post">
      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-       <input class="form-control mr-sm-2" placeholder="아이디 입력" name="id" />
-       <input type="password" class="form-control mr-sm-2" placeholder="비밀번호 입력" name="pwd" />
-       <button class="btn btn-info" type="submit">로그인</button>
-      
+       <input class="form-control mr-sm-2" name="answer" placeholder="번호 입력" />
+       <button class="btn btn-info" type="submit">Search</button>
+       <button class="btn btn-success" 
+          data-toggle="modal" data-target="#exampleModalCenter"
+           type="button">등록</button>
     </nav>
    </form>
-   
+   <table class="table table-hover table-striped">
+     
+    <thead>
+    
+      <tr class="table-success text-center">
+        <th>결과</th>
+        
+      </tr>
+    </thead>   
+    <tbody>
+    	<c:set var="answer" value="정답이 아닙니다."/>
+    	<c:if test = "${param.answer=='3'}">
+    	<c:set var="answer" value="정답입ㄴ디ㅏ.."/>
+    	</c:if>
+       <tr><td>${answer}</td></tr>
+       <%-- <c:if test = "${empty param.answer}"> => 공백인경우 <c:set var="answer" value="번호를 입력하세여">
+       
+       --%>
+    </tbody>
+   </table>    
     
 </div>
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

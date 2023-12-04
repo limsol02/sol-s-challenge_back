@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"
     import="java.util.*"
     import="backendweb.z01_vo.*"
+    import="backendweb.d01_dao.*"
     %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -9,21 +10,20 @@
 <fmt:requestEncoding value="utf-8"/>     
 <!DOCTYPE html>
 <%--
-id : @@@
-pwd : @@@ [로그인]
-==> 요청값을 받아 맞으면 a13_main.jsp
-	그렇지않으면 a14_error.jsp를 forward로 처리해보자
-
-# login DB 연동 처리 순서
-1. sql 작성
-2. VO작성/ 확인
-3. Dao
-4. 화면 구성
-5. 요청값 처리
-6. Dao 호출
-7. login 여부에 따라 다시 로그인
-8. 해당 로그인 member 있을 때, session처리
-9. 로그인 메인 페이지 이동 
+# choose when 구문
+1. jstl에서는 if else if 구문이 없다.
+2. 그 기능을 대체하여 choose when구문이 지원된다.
+3. 기본형식
+	<c:choose>
+		<c:when test="${조건1}">
+			조건1에 해당하는 내용</c:when>
+		<c:when test="${조건2}">
+			조건1을 재외하고 조건2에 해당하는 내용</c:when>
+		<c:when test="${조건3}">
+			나열된 조건을 제외하고 조건3에 해당하는 내용</c:when>
+		<c:other>
+			위 나열된 조건이 아닐때, </c:other>
+	</c:choose>
 
  --%>
 <html>
@@ -52,35 +52,51 @@ pwd : @@@ [로그인]
 
 <body>
 <div class="jumbotron text-center">
-  <h2>로그인페이지</h2>
-<%
+  <h2>타이틀</h2>
 
-String id = request.getParameter("id");
-
-
-String pwd = request.getParameter("pwd");
-
-
-if(id!=null&&pwd!=null){
-	if(id.equals("himan")&&pwd.equals("7777")){%>
-		<jsp:forward page="a13_main.jsp"/>
-	<% }else{%>
-		<jsp:forward page="a14_error.jsp"/>
-	<% }
-}
-%>
 </div>
 <div class="container">
    <form id="frm01" class="form"  method="post">
      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-       <input class="form-control mr-sm-2" placeholder="아이디 입력" name="id" />
-       <input type="password" class="form-control mr-sm-2" placeholder="비밀번호 입력" name="pwd" />
-       <button class="btn btn-info" type="submit">로그인</button>
-      
+       <input class="form-control mr-sm-2"  name="point" placeholder="점수를 입력하세요" />
+       <button class="btn btn-info" type="submit" >점수확인</button>
+       <button class="btn btn-success" 
+          data-toggle="modal" data-target="#exampleModalCenter"
+           type="button">등록</button>
     </nav>
    </form>
-   
+   <table class="table table-hover table-striped">
+      <col width="50%">
+      <col width="50%">
+    <thead>
     
+      <tr class="table-success text-center">
+        <th>점수</th>
+        <th>학점</th>
+        
+      </tr>
+    </thead>   
+    <tbody>
+       <tr>
+       <td>${param.point }</td>
+       <td>
+       	<c:choose >
+       		<c:when test="${param.point>=90 }">A등급</c:when>
+       		<c:when test="${param.point>=80 }">B등급</c:when>
+       		<c:when test="${param.point>=70 }">C등급</c:when>
+       		<c:when test="${param.point>=60 }">D등급</c:when>
+       		<c:otherwise>F등급</c:otherwise>
+       	</c:choose>
+       </td>
+       </tr>
+       
+    </tbody>
+   </table>    
+    <%--
+    a10_choose_exp.jsp
+    구매물품 가격 갯수를 입력하여 총 구매금액에 따른 고객등급을 출력하세영
+    3 미만 : 일반 고객 / 3~10 : VIP고객 / 10초과 : MVP고객출력
+     --%>
 </div>
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">

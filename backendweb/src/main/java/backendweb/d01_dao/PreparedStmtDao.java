@@ -372,7 +372,29 @@ public class PreparedStmtDao {
 		return uptCnt;
 	}
 
+	public Member login(String id, String pwd) {
+		Member mem = null;
+		String sql = "SELECT * FROM member01 WHERE id=? and pwd=? ";
+		try (Connection con = DBCon.con(); PreparedStatement pstmt = con.prepareStatement(sql);) {
+			// 처리코드1
+			pstmt.setString(1, id);
+			pstmt.setString(2, pwd);
+			try (ResultSet rs = pstmt.executeQuery();) {
+				// 처리코드2
+				// mno name id pwd auth point
+				if (rs.next()) {
+					mem = new Member(rs.getInt("mno"), rs.getString("name"), rs.getString("id"), rs.getString("pwd"),
+							rs.getString("auth"), rs.getInt("point"));
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("DB 에러:" + e.getMessage());
+		} catch (Exception e) {
+			System.out.println("일반 에러:" + e.getMessage());
+		}
 
+		return mem;
+	}
 	
 
 	public static void main(String[] args) {

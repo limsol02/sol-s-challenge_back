@@ -1,3 +1,4 @@
+<%@page import="backendweb.d01_dao.PreparedStmtDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     import="java.util.*"
@@ -16,15 +17,26 @@ pwd : @@@ [로그인]
 
 # login DB 연동 처리 순서
 1. sql 작성
-2. VO작성/ 확인
-3. Dao
-4. 화면 구성
-5. 요청값 처리
-6. Dao 호출
-7. login 여부에 따라 다시 로그인
-8. 해당 로그인 member 있을 때, session처리
-9. 로그인 메인 페이지 이동 
+	=> SELECT * FROM member01 WHERE id = ? AND pwd=?
 
+2. VO작성/ 확인
+	=> 결과의 type과 sql문의 결과 컬럼에 따라 작성..
+	=> 주의 : vo를 만들고 result.getString("XXX") 설정시는 sql의 결과를 기준으로
+		처리하여야한다. 특히.. rs.getString("no"-mno의 애칭 no로 한경우)는 애칭을 기준으로 
+		vo를 만들어야 한다. 
+3. Dao
+
+4. 화면 구성
+
+5. 요청값 처리
+
+6. Dao 호출
+
+7. login 여부에 따라 다시 로그인
+
+8. 해당 로그인 member 있을 때, session처리
+
+9. 로그인 메인 페이지 이동 
  --%>
 <html>
 <head>
@@ -55,20 +67,34 @@ pwd : @@@ [로그인]
   <h2>로그인페이지</h2>
 <%
 
+
 String id = request.getParameter("id");
 
 
 String pwd = request.getParameter("pwd");
 
+String logSuc="";
 
-if(id!=null&&pwd!=null){
-	if(id.equals("himan")&&pwd.equals("7777")){%>
-		<jsp:forward page="a13_main.jsp"/>
-	<% }else{%>
-		<jsp:forward page="a14_error.jsp"/>
-	<% }
+if(id!=null&&pwd!=null){ // 초기 아이디 패스워드 입력 전 화면과 구분..
+	PreparedStmtDao dao = new PreparedStmtDao();
+	Member mem = dao.login(id, pwd);
+	if(mem!=null){
+		logSuc = "Y";
+		session.setAttribute("mem", mem); // 로그인 성공하였기에 
+	}else{
+		logSuc = "N";		
+	 }
 }
 %>
+<script>
+	var login = "<%=logSuc%>";
+	if(login=="Y"){
+		alert("로그인성공")
+		location.href='a13_mainSession.jsp';
+	}if(login=="N"){
+		alert("로그인실패\n다시 로그인하세용")
+	}
+</script>
 </div>
 <div class="container">
    <form id="frm01" class="form"  method="post">

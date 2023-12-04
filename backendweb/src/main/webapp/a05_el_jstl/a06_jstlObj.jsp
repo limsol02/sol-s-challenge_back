@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     import="java.util.*"
+    import="backendweb.z01_vo.*"
+    import="backendweb.d01_dao.*"
+    
     %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -8,50 +11,21 @@
 <fmt:requestEncoding value="utf-8"/>     
 <!DOCTYPE html>
 <%--
-# 내장 객체
-1. session scope 관련 객체
-	jsp에서는 변수/객체를 저장하는 시간적 범위를 추가하여 저장할 수 있다.
-	이것을 session scope에 의한 저장이라고 한다.
-	[int, double, String, Person] ==> 크기과 유형 
-	쉽게 말하면, 브라우저(클라이언트)/웹 서버-톰캣(서버)과의 관계에서
-	위 데이터를 임시로 어느 범위까지 저장하느냐를 처리해주는 것을 말한다.
-	각, 범위에 대하여 jsp 내장객체로 저장처리를 설정하게 해준다.
-	
-	1) pageContext : 페이지 설정 범위
-		-> 해당 페이지에서만 사용가능(자바클래스 처럼 그 페이지에서만 사용가능)
-	
-	2) request : 요청값 처리
-		-> 요청값을 처리하는 범위까지 사용하는 주로 forward 기능메서드로 처리된 범위를 말한다.
-		-> forward 기능메서드 = request,response를 함께 전달하는 메서드.
-		[ex] A.jsp에서 request범위로 데이터 저장한 후, 
-			forward()로 B.jsp를 호출하면 해당 페이지에서 request범위로 
-			설정한 데이터는 사용가능하다.
-		==> MVC패턴에 모델 데이터로 설정해서 처리할 때, 주로 사용..
-		
-	3) session : session 설정 범위
-		-> 같은 웹 브라우저와 웹 서버가 연결되어 있을 때, 데이터를 저장하는 범위를 말하는데, 
-			이 범위는 둘 중에 하나가 연결을 끊는 순간 사라진다.
-		[ex] A.jsp 에서 세션으로 저장한 경우
-			같은 브라우저가 띄워져 있고, 서버도 실행되어 있는 순간
-			다른 어떤 페이지로 이동 하더라도 저장된 데이터를 가져올 수 있다. 
-			
-		[ex] 각 페이지별로 login처리된 여부 표시, 
-			게시판에 등록자를 session에 설정된 아이디로 처리되게 설정
-			추후에 해당 게시판을 변경할 때, session과 등록자를 비교하여
-			해당 등록자와 session이 같으면 수정/삭제 가능하게 처리	
-	
-	4) application : 어플리케이션 즉, 웹 서버 설정범위
-		-> 브라우저 상관없이 웹서버가 재가동하지 않는 한 저장되는 범위를 말한다.
-		
-	# 기본형식
-	XXXX.setAttribute("key",값(변수/객체)); -> 저장
-	XXXX.getAttribute("key"); -> 가져오기
-
-2. 기타객체
-	1) out : jsp페이지가 생성하는 결과를 출력할 때, 사용되는 출력 스트림 객체
-	2) config : jsp 페이지에 대한 설정 정보를 저장한다.
-	3) exception : 예외객체, 에러 페이지에서만 사용된다.
-
+# jstl을 통한 객체 선언.
+1. jstl은 session 범위로 객체를 선언하여 할당할 수 있고,
+2. 각 내용을 property로 접근할 수 있다.
+3. 기본 문법
+	1) 기본 변수:<c:set var="변수명" value="값" 
+		scope="page|request|session|application"/>
+	2) 객체 변수
+		<c:set var="변수명" value="<%=new  생성자(초기값)%> 
+			scope="@@@/>
+		XXXX.setAttribute("객체변수", new 생성자(초기값));
+		<c:set var="변수명2" value="${객체변수}" scope=""/>
+	3) 호출 
+		${변수명}
+		${변수명2.property명}	
+				
  --%>
 <html>
 <head>
@@ -79,8 +53,49 @@
 
 <body>
 <div class="jumbotron text-center">
-  <h2 data-toggle="modal" data-target="#exampleModalCenter">타이틀</h2>
-
+  <h2>jstl 객체 할당</h2>
+  <c:set var="name" value="홍길동" scope="page"/>
+  <h3>기본 변수 호출:${name}</h3>
+  <c:set var="p02" value='<%=new Person("오길동",27,"제주")%>'/>
+  <%
+  request.setAttribute("person", new Person("마길동",25,"서울"));
+  %>
+  <c:set var="p01" value="${person}" scope="session" />
+  <h3>기본 객체 변수 호출:${p01.name}</h3>	
+  <h3>기본 객체 변수 호출:${p01.age}</h3>	
+  <h3>기본 객체 변수 호출:${p01.loc}</h3>
+  <h3>기본 객체 변수 호출:${p02.name}</h3>	
+  <h3>기본 객체 변수 호출:${p02.age}</h3>	
+  <h3>기본 객체 변수 호출:${p02.loc}</h3>  
+  <%--
+  ex) c:set 
+  	1) 변수로 가격을 설정하여 request범위로 호출하고,
+  	2) 객체변수로 pageContext로 Dept로 설정하고, 
+  		다시 c:set 형태로 할당하여 출력하세요 
+   --%>	
+  <c:set var="price" value="3000" scope="request"/>
+  <h3>기본 변수 price:${price}</h3>
+  <c:set var="d01" value='<%= new Dept(10,"인사","대전") %>' 
+  	scope="page"/>
+  <%
+  	pageContext.setAttribute("d02", new Dept(20,"재무","제주"));
+  %>
+  <c:set var="d03" value="${d02}" scope="session"/>
+  <h3>객체(d01):${d01.deptno }</h3>
+  <h3>객체(d01):${d01.dname }</h3>
+  <h3>객체(d01):${d01.loc}</h3>
+  <h3>객체(d01):${d03.deptno }</h3>
+  <h3>객체(d01):${d03.dname }</h3>
+  <h3>객체(d01):${d03.loc}</h3>  
+  ${d03.setLoc("인천")}
+  <h3>변경property 객체(d01):${d03.loc}</h3>
+  <%-- target="${객체변수}" property="프로퍼티명" value="할당할값" --%>
+  <c:set target="${d03}" property="dname" value="회계"/>
+  <h3>변경property 객체(d01):${d03.dname }</h3>
+  
+  
+  
+   
 </div>
 <div class="container">
 	<form id="frm01" class="form"  method="post">
@@ -88,6 +103,9 @@
 	    <input class="form-control mr-sm-2" placeholder="제목" />
 	    <input class="form-control mr-sm-2" placeholder="내용" />
 	    <button class="btn btn-info" type="submit">Search</button>
+	    <button class="btn btn-success" 
+	    	data-toggle="modal" data-target="#exampleModalCenter"
+	        type="button">등록</button>
  	</nav>
 	</form>
    <table class="table table-hover table-striped">
