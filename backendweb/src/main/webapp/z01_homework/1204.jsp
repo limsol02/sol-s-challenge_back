@@ -184,7 +184,11 @@ div class="container">
  	</nav>
 	</form>
 	
-
+<%--
+${empty 변수} : 변수 == null || 변수.equals("")
+${not empty 변수} : 변수 != null && !변수.equals("")
+ jstl에서 볍ㄴ수는 모두 다 전역변수로 조건문이나 반복문에서 하단 블럭에 설정하더라도 어디서든 호출 가능하다. 
+ --%>
 
 
 <table class="table table-hover table-striped">

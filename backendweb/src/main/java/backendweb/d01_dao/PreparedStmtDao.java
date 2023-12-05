@@ -89,7 +89,8 @@ public class PreparedStmtDao {
 	 */
 	public List<Emp> getEmpList(Emp sch) {
 		List<Emp> empList = new ArrayList<Emp>();
-		String sql = "SELECT *\r\n" + "FROM emp01\r\n" + "WHERE ename LIKE ?\r\n" + "AND job LIKE ?\r\n ";
+		String sql = "SELECT *\r\n" + "FROM emp02\r\n" 
+		+ "WHERE ename LIKE ?\r\n" + "AND job LIKE ?\r\n ";
 		// 기본값 0인경우 전체 검색이 필요하기에 0면 검색조건에서 제외
 		// sql 문과 pstmt에 처리..
 		if (sch.getDeptno() != 0)
@@ -396,6 +397,32 @@ public class PreparedStmtDao {
 		return mem;
 	}
 	
+	public List<Emp> getEmpListExp(String ename, String job) {
+		List<Emp> empList = new ArrayList<Emp>();
+		String sql = "SELECT *\r\n" + "FROM emp01\r\n" 
+		+ "WHERE ename LIKE ?\r\n" + "AND job LIKE ?\r\n ";
+		try (Connection con = DBCon.con(); PreparedStatement pstmt = con.prepareStatement(sql);) {
+			// 처리코드1
+			pstmt.setString(1, "%" +ename+ "%");
+			pstmt.setString(2, "%" +job+ "%");
+			try (ResultSet rs = pstmt.executeQuery();) {
+				// 처리코드2
+				while (rs.next()) {
+					empList.add(new Emp(rs.getInt("empno"), rs.getString("ename"), rs.getString("job"),
+							rs.getInt("mgr"), rs.getDate("hiredate"), rs.getDouble("sal"), rs.getDouble("comm"),
+							rs.getInt("deptno")));
+				}
+				System.out.println("건수:" + empList.size());
+			}
+		} catch (SQLException e) {
+			System.out.println("DB 에러:" + e.getMessage());
+		} catch (Exception e) {
+			System.out.println("일반 에러:" + e.getMessage());
+		}
+		return empList;
+	}
+
+	
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -403,17 +430,18 @@ public class PreparedStmtDao {
 		int insCnt = dao.insertEmp01(new EmpDTO(1006, "천길동", "대리", 7799, "2023-11-16", 5500, 1000, 20));
 		System.out.println(insCnt > 0 ? "등록성공!!" : "등록실패");
 
-		for (Emp e : dao.getEmpList(new Emp("", "", 20))) {
-			System.out.print(e.getEmpno() + "\t");
-			System.out.print(e.getEname() + "\t");
-			System.out.print(e.getDeptno() + "\n");
-		}
-
-		for (Dept d : dao.getDeptList("", "")) {
-			System.out.print(d.getDeptno() + "\t");
-			System.out.print(d.getDname() + "\t");
-			System.out.print(d.getLoc() + "\n");
-		}
+//		for (Emp e : dao.getEmpList(new Emp("", "", 20))) {
+//			System.out.print(e.getEmpno() + "\t");
+//			System.out.print(e.getEname() + "\t");
+//			System.out.print(e.getDeptno() + "\n");
+//		}
+//
+//		for (Dept d : dao.getDeptList("", "")) {
+//			System.out.print(d.getDeptno() + "\t");
+//			System.out.print(d.getDname() + "\t");
+//			System.out.print(d.getLoc() + "\n");
+//		}
+	
 
 	}
 
