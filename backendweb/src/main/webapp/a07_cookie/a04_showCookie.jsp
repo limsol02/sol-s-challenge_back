@@ -9,7 +9,10 @@
 <c:set var="path" value="${pageContext.request.contextPath }"/>
 <fmt:requestEncoding value="utf-8"/>     
 <!DOCTYPE html>
+<%--
 
+
+ --%>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -36,8 +39,9 @@
 
 <body>
 <div class="jumbotron text-center">
-  <h2>날짜형 데이터</h2>
-
+  <h2>쿸히 값 받기</h2>
+  <a href="a03_makeCookie.jsp">쿸히 굽기</a>
+	
 </div>
 <div class="container">
    <form id="frm01" class="form"  method="post">
@@ -50,54 +54,28 @@
            type="button">등록</button>
     </nav>
    </form>
-   <%--
-# jstl로 날짜형 데이터 처리하기
-1. jstl을 이용하면 날짜형 데이터를 효과적으로 화면에 출력할 수 있다.
-2. 기본 코드 및 출력형식
-	<fmt:formatDate value="날짜형데이터" 
-			type="date|time|both"
-			dateStyle="full|short|long"
-			timeStyle="full|short|long"
-			pattern="z yyyy-MM-dd a h:mm"
-		날짜 처리 : (날짜+시간)
-	날짜 유형 데이터를 원하는 형식으로 출력할 때, 주로 사용된다.
-
- --%>
-   <c:set var="now" value="<%=new Date() %>"/> <%--날짜 기본 객체 생성--%>
    <table class="table table-hover table-striped">
-      <col width="40%">
-      <col width="60%">
-       
+      <col width="50%">
+      <col width="50%">
+     
+    <thead>
+    
+      <tr class="table-success text-center">
+        <th>쿸히 키</th>
+        <th>쿸히 값</th>
+        
+      </tr>
+    </thead>   
     <tbody>
-       <tr>
-       <th>date full</th>
-       <td><fmt:formatDate value="${now}" type="date" dateStyle="full"/></td>
-       </tr>
-       <tr>
-       <th>date short</th>
-       <td><fmt:formatDate value="${now}" type="date" dateStyle="short"/></td>
-       </tr>
-       <tr>
-       <th>time full</th>
-       <td><fmt:formatDate value="${now}" type="time" dateStyle="full"/></td>
-       </tr>
-       <tr>
-       <th>time short</th>
-       <td><fmt:formatDate value="${now}" type="time" dateStyle="short"/></td>
-       </tr>
-       <tr>
-       <th>both full</th>
-       <td><fmt:formatDate value="${now}" type="both" dateStyle="full"/></td>
-       </tr>
-       <tr>
-       <th>pattern1</th>
-       <td><fmt:formatDate value="${now}" pattern="z a h:mm"/></td>
-       </tr>
-       <tr>
-       <th>pattern2</th>
-       <td><fmt:formatDate value="${now}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-       </tr>
-       
+      
+	<% 
+	Cookie[] cookies = request.getCookies();
+	for(Cookie c : cookies){
+	%>
+		 <tr><td><%=c.getName()%></td>
+		 <td><%=c.getValue()%></td></tr>
+	<%} %>
+      
     </tbody>
    </table>    
     

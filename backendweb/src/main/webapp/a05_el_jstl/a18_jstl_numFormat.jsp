@@ -86,6 +86,7 @@
        <tr>
        <td>${price}</td>
        <td><fmt:formatNumber value="${price}" /></td>
+       <%--날짜 데이터가 지정된 형식을 변수로 할당하고 그 변수를 출력하고 활용할 때 사용 --%>
        <td><fmt:formatNumber value="${price}" type="number" var="numberType"/>
        변수 :${numberType}</td>
        <td><fmt:formatNumber value="${price}" type="currency" currencySymbol="원"/></td>

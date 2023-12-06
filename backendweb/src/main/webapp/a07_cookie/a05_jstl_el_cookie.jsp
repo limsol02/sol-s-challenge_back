@@ -9,7 +9,10 @@
 <c:set var="path" value="${pageContext.request.contextPath }"/>
 <fmt:requestEncoding value="utf-8"/>     
 <!DOCTYPE html>
+<%--
 
+
+ --%>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -36,7 +39,16 @@
 
 <body>
 <div class="jumbotron text-center">
-  <h2>날짜형 데이터</h2>
+  <h2>jstl과 el을 통한 쿠키 생성</h2>
+  <%-- 
+  # jstl과 el을 통한 쿠키 생성
+  1. 쿠키 생성
+  	<c:cookie name="쿠키의 키" value="쿠키의 값"/>
+  2. 쿠키 확인
+  	<c:forEach items="${responseScope.cookieMap}" var="cookie">
+  		<h2>${cookie.name}/${cookie.value}</h2>
+  	</c:forEach>
+  --%>
 
 </div>
 <div class="container">
@@ -47,57 +59,29 @@
        <button class="btn btn-info" type="submit">Search</button>
        <button class="btn btn-success" 
           data-toggle="modal" data-target="#exampleModalCenter"
-           type="button">등록</button>
+           type="button">검색</button>
     </nav>
    </form>
-   <%--
-# jstl로 날짜형 데이터 처리하기
-1. jstl을 이용하면 날짜형 데이터를 효과적으로 화면에 출력할 수 있다.
-2. 기본 코드 및 출력형식
-	<fmt:formatDate value="날짜형데이터" 
-			type="date|time|both"
-			dateStyle="full|short|long"
-			timeStyle="full|short|long"
-			pattern="z yyyy-MM-dd a h:mm"
-		날짜 처리 : (날짜+시간)
-	날짜 유형 데이터를 원하는 형식으로 출력할 때, 주로 사용된다.
-
- --%>
-   <c:set var="now" value="<%=new Date() %>"/> <%--날짜 기본 객체 생성--%>
    <table class="table table-hover table-striped">
-      <col width="40%">
-      <col width="60%">
-       
+      <col width="10%">
+      <col width="50%">
+      <col width="15%">
+      <col width="15%">
+      <col width="10%">
+    <thead>
+    
+      <tr class="table-success text-center">
+        <th>번호</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>작성일</th>
+        <th>조회</th>
+      </tr>
+    </thead>   
     <tbody>
-       <tr>
-       <th>date full</th>
-       <td><fmt:formatDate value="${now}" type="date" dateStyle="full"/></td>
-       </tr>
-       <tr>
-       <th>date short</th>
-       <td><fmt:formatDate value="${now}" type="date" dateStyle="short"/></td>
-       </tr>
-       <tr>
-       <th>time full</th>
-       <td><fmt:formatDate value="${now}" type="time" dateStyle="full"/></td>
-       </tr>
-       <tr>
-       <th>time short</th>
-       <td><fmt:formatDate value="${now}" type="time" dateStyle="short"/></td>
-       </tr>
-       <tr>
-       <th>both full</th>
-       <td><fmt:formatDate value="${now}" type="both" dateStyle="full"/></td>
-       </tr>
-       <tr>
-       <th>pattern1</th>
-       <td><fmt:formatDate value="${now}" pattern="z a h:mm"/></td>
-       </tr>
-       <tr>
-       <th>pattern2</th>
-       <td><fmt:formatDate value="${now}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-       </tr>
-       
+       <tr><td></td><td></td><td></td><td></td><td></td></tr>
+       <tr><td></td><td></td><td></td><td></td><td></td></tr>
+       <tr><td></td><td></td><td></td><td></td><td></td></tr>
     </tbody>
    </table>    
     

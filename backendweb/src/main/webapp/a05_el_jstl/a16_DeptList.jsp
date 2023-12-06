@@ -3,6 +3,7 @@
     import="java.util.*"
     import="backendweb.z01_vo.*"
     import="backendweb.d01_dao.*"
+    
     %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -20,7 +21,7 @@
 <link rel="stylesheet" href="${path}/a00_com/bootstrap.min.css" >
 <link rel="stylesheet" href="${path}/a00_com/jquery-ui.css" >
 <style>
-   td{text-align:center;}
+	td{text-align:center;}
 </style>
 <script src="${path}/a00_com/jquery.min.js"></script>
 <script src="${path}/a00_com/popper.min.js"></script>
@@ -29,62 +30,61 @@
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://developers.google.com/web/ilt/pwa/working-with-the-fetch-api" type="text/javascript"></script>
 <script type="text/javascript">
-   $(document).ready(function(){
-      <%-- 
-      
-      --%>   
-   });
+	$(document).ready(function(){
+	
+	});
 </script>
 </head>
 
 <body>
 <div class="jumbotron text-center">
-  <h2>Dept리스트</h2>
+  <h2>부서정보</h2>
 
 </div>
+<%-- 
+		
+--%>
 
-<%
-PreparedStmtDao dao = new PreparedStmtDao();
-String deptnoStr = request.getParameter("deptno");
-System.out.println(deptnoStr);
-
-
-int deptno = 0;
-if(deptnoStr!=null) {
-	deptno = Integer.parseInt(deptnoStr);
-}
-	
-request.setAttribute("deptList", dao.getDept(deptno));
-
-%>
 <div class="container">
-   <form id="frm01" class="form"  method="post">
-     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-       <input class="form-control mr-sm-2" placeholder="부서번호 입력" name="deptno" />
-      
-       <button class="btn btn-info" type="submit">Search</button>
-       </nav>
-   </form>
+	<form id="frm01" class="form"  method="post">
+  	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+	    <input placeholder="부서이름" name="dname" value="${param.dname}" class="form-control mr-sm-2" />
+	    <input placeholder="부서위치" name="loc"  value="${param.loc}"  class="form-control mr-sm-2"/>
+	    <button class="btn btn-info" type="submit">Search</button>
+	    <button class="btn btn-success" 
+	    	data-toggle="modal" data-target="#exampleModalCenter"
+	        type="button">등록</button>
+ 	</nav>
+	</form>
    <table class="table table-hover table-striped">
-      <col width="33%">
-      <col width="33%">
-      <col width="34%">
+   	<col width="33%">
+   	<col width="34%">
+   	<col width="33%">
+  	
     <thead>
-    
+     	
       <tr class="table-success text-center">
         <th>부서번호</th>
-        <th>부서이름</th>
-        <th>지역</th>
+        <th>부서명</th>
+        <th>부서위치</th>
       </tr>
-    </thead>   
+      
+    </thead>
+<%
+String dname = request.getParameter("dname");
+if(dname==null) dname="";
+String loc = request.getParameter("loc");
+if(loc==null) loc="";
+PreparedStmtDao dao = new PreparedStmtDao();
+request.setAttribute("dlist", dao.getDeptList(dname, loc));
+%>     	
     <tbody>
-       <tr>
-       <td>${deptList.deptno}</td>
-       <td>${deptList.dname}</td>
-       <td>${deptList.loc}</td>
-       </tr>
+     	<c:forEach var="dept" items="${dlist}" >
+    	<tr><td>${dept.deptno}</td><td>${dept.dname}</td>
+    		<td>${dept.loc}</td></tr>
+    	</c:forEach>
     </tbody>
-   </table>    
+	</table>    
     
 </div>
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -97,16 +97,16 @@ request.setAttribute("deptList", dao.getDept(deptno));
         </button>
       </div>
       <div class="modal-body">
-      <form id="frm02" class="form"  method="post">
-        <div class="row">
-         <div class="col">
-           <input type="text" class="form-control" placeholder="사원명 입력" name="ename">
-         </div>
-         <div class="col">
-           <input type="text" class="form-control" placeholder="직책명 입력" name="job">
-         </div>
-        </div>
-       </form> 
+		<form id="frm02" class="form"  method="post">
+	     <div class="row">
+	      <div class="col">
+	        <input type="text" class="form-control" placeholder="사원명 입력" name="ename">
+	      </div>
+	      <div class="col">
+	        <input type="text" class="form-control" placeholder="직책명 입력" name="job">
+	      </div>
+	     </div>
+	    </form> 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

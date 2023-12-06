@@ -271,6 +271,10 @@ public class PreparedStmtDao {
 
 	// INSERT INTO emp01 values(?,?,?,?, to_date(?,'YYYY-MM-DD'),?,?,?)
 	// dao.insertEmp01(new EmpDTO(1003,"하길동","대리",7799,"2023-11-01",3500,1000,20));
+	
+	// getDeptList insertDept
+	
+	
 	public int insertDept(Dept ins) {
 		int insCnt = 0;
 		String sql = "INSERT INTO dept01 values(?,?,?)";

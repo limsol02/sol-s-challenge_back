@@ -9,7 +9,10 @@
 <c:set var="path" value="${pageContext.request.contextPath }"/>
 <fmt:requestEncoding value="utf-8"/>     
 <!DOCTYPE html>
+<%--
 
+
+ --%>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -36,68 +39,69 @@
 
 <body>
 <div class="jumbotron text-center">
-  <h2>날짜형 데이터</h2>
+  <h2>타이틀</h2>
+<%--
+등록시 로딩하는 모달창의 회원버튼 클릭시 리스트에 회원등록 정보 ㅜㄹ력
+private int mno;
+	private String name;
+	private String id;
+	private String pwd;
+	private String auth;
+	private int point;
+ --%>
+ <jsp:useBean id="dao" class="backendweb.d01_dao.MemberDao"/>
+ <jsp:useBean id="m01" class="backendweb.z01_vo.Member"/>
+ <jsp:setProperty property="*" name="m01"/>
+ <c:if test="${not empty m01.name}"> <%-- 등록 전 초기화면 구분 --%>
+ 	<script>
+ 		var regCnt = "${dao.insertMember(m01)}"
 
+ 		alert(regCnt=="0"?"등록실패":"등록성공")
+ 	</script>
+ </c:if>
 </div>
+
 <div class="container">
    <form id="frm01" class="form"  method="post">
      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-       <input class="form-control mr-sm-2" placeholder="제목" />
-       <input class="form-control mr-sm-2" placeholder="내용" />
+       <input class="form-control mr-sm-2" placeholder="이름" value="${param.nameSch}" name="nameSch"/>
+       <input class="form-control mr-sm-2" placeholder="권한" value="${param.authSch}" name="authSch"/>
        <button class="btn btn-info" type="submit">Search</button>
        <button class="btn btn-success" 
           data-toggle="modal" data-target="#exampleModalCenter"
            type="button">등록</button>
     </nav>
    </form>
-   <%--
-# jstl로 날짜형 데이터 처리하기
-1. jstl을 이용하면 날짜형 데이터를 효과적으로 화면에 출력할 수 있다.
-2. 기본 코드 및 출력형식
-	<fmt:formatDate value="날짜형데이터" 
-			type="date|time|both"
-			dateStyle="full|short|long"
-			timeStyle="full|short|long"
-			pattern="z yyyy-MM-dd a h:mm"
-		날짜 처리 : (날짜+시간)
-	날짜 유형 데이터를 원하는 형식으로 출력할 때, 주로 사용된다.
-
- --%>
-   <c:set var="now" value="<%=new Date() %>"/> <%--날짜 기본 객체 생성--%>
    <table class="table table-hover table-striped">
-      <col width="40%">
-      <col width="60%">
-       
+      <col width="16%">
+      <col width="16%">
+      <col width="16%">
+      <col width="16%">
+      <col width="16%">
+      <col width="16%">
+    <thead>
+    
+      <tr class="table-success text-center">
+        <th>번호</th>
+        <th>이름</th>
+        <th>아이디</th>
+        <th>비밀번호</th>
+        <th>권한</th>
+        <th>포인트</th>
+      </tr>
+    </thead>   
     <tbody>
+    <c:forEach var="m" items="${dao.getMemberList(param.nameSch,param.authSch)}">
        <tr>
-       <th>date full</th>
-       <td><fmt:formatDate value="${now}" type="date" dateStyle="full"/></td>
+       <td>${m.mno}</td>
+       <td>${m.name}</td>
+       <td>${m.id}</td>
+       <td>${m.pwd}</td>
+       <td>${m.auth}</td>
+       <td>${m.point}</td>
        </tr>
-       <tr>
-       <th>date short</th>
-       <td><fmt:formatDate value="${now}" type="date" dateStyle="short"/></td>
-       </tr>
-       <tr>
-       <th>time full</th>
-       <td><fmt:formatDate value="${now}" type="time" dateStyle="full"/></td>
-       </tr>
-       <tr>
-       <th>time short</th>
-       <td><fmt:formatDate value="${now}" type="time" dateStyle="short"/></td>
-       </tr>
-       <tr>
-       <th>both full</th>
-       <td><fmt:formatDate value="${now}" type="both" dateStyle="full"/></td>
-       </tr>
-       <tr>
-       <th>pattern1</th>
-       <td><fmt:formatDate value="${now}" pattern="z a h:mm"/></td>
-       </tr>
-       <tr>
-       <th>pattern2</th>
-       <td><fmt:formatDate value="${now}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-       </tr>
-       
+    </c:forEach>
+      
     </tbody>
    </table>    
     
@@ -106,7 +110,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">타이틀</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">회원등록</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -115,17 +119,35 @@
       <form id="frm02" class="form"  method="post">
         <div class="row">
          <div class="col">
-           <input type="text" class="form-control" placeholder="사원명 입력" name="ename">
+           <input type="text" class="form-control" value="0" placeholder="번호 입력" name="mno">
          </div>
          <div class="col">
-           <input type="text" class="form-control" placeholder="직책명 입력" name="job">
+           <input type="text" class="form-control" placeholder="이름 입력" name="name">
+         </div>
+        </div>
+        <div class="row">
+         <div class="col">
+           <input type="text" class="form-control" placeholder="아이디 입력" name="id">
+         </div>
+         <div class="col">
+           <input type="password" class="form-control" placeholder="비밀번호 입력" name="pwd">
+         </div>
+        </div>
+        <div class="row">
+         <div class="col">
+           <input type="text" class="form-control" placeholder="권한 입력" name="auth">
+         </div>
+         <div class="col">
+           <input type="text" class="form-control" placeholder="포인트 입력" name="point">
          </div>
         </div>
        </form> 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button"
+        	onclick='$("#frm02").submit();'
+         class="btn btn-primary">회원등록처리</button>
       </div>
     </div>
   </div>

@@ -196,58 +196,37 @@ request.setAttribute("empList",dao.getEmpListExp(ename,job));
   <h2>타이틀</h2>
 
 </div>
-<%
-PreparedStmtDao dao = new PreparedStmtDao();
 
-String ename=request.getParameter("ename");
-if(ename==null) ename="";
-String job=request.getParameter("job");
-if(job==null) ename="";
-
-request.setAttribute("empList",dao.getEmpListExp(ename,job));
-%>
-<div class="container">
-	<form id="frm01" class="form"  method="post">
-     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-       <input class="form-control mr-sm-2" placeholder="사원명검색" name="ename" />
-       <input class="form-control mr-sm-2" placeholder="직책검색" name="job" />
-     
-       <button class="btn btn-info" type="submit">검색</button>
-      
-    </nav>
-   </form>
    <table class="table table-hover table-striped">
    	
-   	
-    <thead>
-    
+  <%--현재 달의 1일부터 마지막 날까지를 테이블 사용하여 타이틀은 요일 표시하여 날짜를 출력하세요--%>
+     <thead>
       <tr class="table-success text-center">
-        <th>사원번호</th>
-        <th>사원명</th>
-        <th>직책</th>
-        <th>관리자번호</th>
-        <th>입사일</th>
-        <th>급여</th>
-        <th>보너스</th>
-        <th>부서번호</th>
-        
+        <th>일</th>
+        <th>요일</th>
       </tr>
     </thead>	
     <tbody>
-    <c:forEach var="elist" items="${empList}">
+    <c:forEach var="date" begin="1" end="31" varStatus="sts">
+    	<c:if test=${sts.count%7==1}/> 
     	<tr>
-    	<td>${elist.empno}</td>
-    	<td>${elist.ename}</td>
-    	<td>${elist.job}</td>
-    	<td>${elist.mgr}</td>
-    	<td>${elist.hiredate}</td>
-    	<td>${elist.sal}</td>
-    	<td>${elist.comm}</td>
-    	<td>${elist.deptno}</td>    	
+    	<td>12월 ${date}일</td>
+    	<c:choose >
+    	<c:when test="${date%7==1}"><td>금요일</td></c:when>
+    	<c:when test="${date%7==2}"><td>토요일</td></c:when>
+    	<c:when test="${date%7==3}"><td>일요일</td></c:when>
+    	<c:when test="${date%7==4}"><td>월요일</td></c:when>
+    	<c:when test="${date%7==5}"><td>화요일</td></c:when>
+    	<c:when test="${date%7==6}"><td>수요일</td></c:when>
+    	<c:when test="${date%7==0}"><td>목요일</td></c:when>	
+    	</c:choose>
     	</tr>
+    	
     </c:forEach>
-     </tbody>
-	</table>    
+    
+    </tbody>
+    </table>
+    
     
 </div>
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
