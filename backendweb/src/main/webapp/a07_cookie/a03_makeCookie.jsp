@@ -51,9 +51,17 @@ String name = request.getParameter("name");
 String val = request.getParameter("val");
 if(name!=null&& val!=null){
 	response.addCookie(new Cookie(name,val));
+	// 자바 코드에 의해서 script가 나올지 안나올지는 결정 가능
  %>
 	<script>
+	<%--
+	javascript의 조건에 의해 자바를 변경하는 건 불가능하다.
+	if(name=="himan"){
+		<%=val%> = "10000";
+	} --> 불가능
+	--%>
 		alert("쿠키생성!")
+		// 자바의 변수할당 데이터를 자바스크립트로 할당 가능..
 	</script>
 <% 
 }%>

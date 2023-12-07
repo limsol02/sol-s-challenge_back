@@ -3,6 +3,7 @@
     import="java.util.*"
     import="backendweb.z01_vo.*"
     import="backendweb.d01_dao.*"
+    errorPage="a05_errorPage.jsp"
     %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -39,30 +40,19 @@
 
 <body>
 <div class="jumbotron text-center">
-  <h2>쿠키값 확인</h2>
-<%
-// 클라이언트(브라우저)가 가지고 있는 cookie 정보를 서버에
-// request 객체로 전송해서 그중에 getCookies()라는 메서드를
-// 통해서 쿠키정보를 서버에서 배열로 확인한다. 
+  <h2>타이틀</h2>
 
-   Cookie[] cookies = request.getCookies();
-
-for(Cookie c : cookies){
-   %>
-   <h3><%=c.getName() %>/<%=c.getValue() %></h3>
-
-<%} %>
-<%-- 쿠키의 키와 값 --%>
-<%--
-a03_makeCookie.jsp 쿠키만들기 menu01 pizza로 쿠키의 키와 값을 
-a04_showCookie.jsp 에서 쿠키 확인
- --%>
 </div>
+<%
+String id = request.getParameter("id");
+String pwd = request.getParameter("pwd");
+id.toString();
+%>
 <div class="container">
    <form id="frm01" class="form"  method="post">
      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-       <input class="form-control mr-sm-2" placeholder="제목" />
-       <input class="form-control mr-sm-2" placeholder="내용" />
+       <input class="form-control mr-sm-2" placeholder="아이디 입력" name="id"/>
+       <input class="form-control mr-sm-2" placeholder="패스워드 입력" name="pwd" />
        <button class="btn btn-info" type="submit">Search</button>
        <button class="btn btn-success" 
           data-toggle="modal" data-target="#exampleModalCenter"

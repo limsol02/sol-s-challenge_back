@@ -172,7 +172,7 @@
 <jsp:useBean id="dao" class="backendweb.d01_dao.PreparedStmtDao"/>
 	<jsp:useBean id="d01" class="backendweb.z01_vo.Dept"/>
 	<jsp:setProperty property="*" name="d01"/>
-	<c:if test="${not empty d01.deptno}">
+	<c:if test="${not empty d01.dname}">
 		<script type="text/javascript">
 			var regDept = ${dao.insertDept(d01)}
 			alert(regDept=="0"?"등록실패":"등록성공")

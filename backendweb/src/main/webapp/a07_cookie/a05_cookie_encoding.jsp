@@ -3,6 +3,8 @@
     import="java.util.*"
     import="backendweb.z01_vo.*"
     import="backendweb.d01_dao.*"
+    import="java.net.URLEncoder"
+    import="java.net.URLDecoder"
     %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -10,8 +12,18 @@
 <fmt:requestEncoding value="utf-8"/>     
 <!DOCTYPE html>
 <%--
-
-
+# 쿠키의 encoding/ decoding 처리
+1. 쿠키는 2byte이상의 데이터를 저장하지 못한다.
+2. 그래서 한글의 경우 encoding 하여 저장 후, 다시 가져와서 확인할 때는
+	decoding하여 출력하여야한다.
+3. encoding 처리를 위한 코드
+	import java.net.URLEncoder
+	new Cookie(URLEncoding.encoding("키","utf-8"),
+				URLEncoding.encoding("값","utf-8"));
+4. decoding 처리를 위한 코드
+	import java.net.URLDecoder
+	String key=URLDecoder.decode(c1.getName(),"utf-8");
+	String val=URLDecoder.decode(c1.getValue(),"utf-8");
  --%>
 <html>
 <head>
@@ -39,31 +51,32 @@
 
 <body>
 <div class="jumbotron text-center">
-  <h2>쿠키값 확인</h2>
-<%
-// 클라이언트(브라우저)가 가지고 있는 cookie 정보를 서버에
-// request 객체로 전송해서 그중에 getCookies()라는 메서드를
-// 통해서 쿠키정보를 서버에서 배열로 확인한다. 
+  <h2>한글 쿠키 값 설정</h2>
 
-   Cookie[] cookies = request.getCookies();
-
-for(Cookie c : cookies){
-   %>
-   <h3><%=c.getName() %>/<%=c.getValue() %></h3>
-
-<%} %>
-<%-- 쿠키의 키와 값 --%>
-<%--
-a03_makeCookie.jsp 쿠키만들기 menu01 pizza로 쿠키의 키와 값을 
-a04_showCookie.jsp 에서 쿠키 확인
- --%>
 </div>
+<%
+// 쿠키의 key와 val을 한글로 처리(encoding 처리)
+String cookieKey = request.getParameter("cookieKey");
+String cookieVal = request.getParameter("cookieVal");
+
+if(!(cookieKey==null||cookieVal==null)) {
+	Cookie ck = new Cookie(URLEncoder.encode(cookieKey,"utf-8"),URLEncoder.encode(cookieVal,"utf-8"));	
+	response.addCookie(ck);
+	%>
+	<script>
+	alert("한글로 쿠키 추가성공! 쿠키값 확인하러가기");
+	location.href="a06_cookie_decoding.jsp";
+	</script>
+
+
+<%}
+%>
 <div class="container">
    <form id="frm01" class="form"  method="post">
      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-       <input class="form-control mr-sm-2" placeholder="제목" />
-       <input class="form-control mr-sm-2" placeholder="내용" />
-       <button class="btn btn-info" type="submit">Search</button>
+       <input class="form-control mr-sm-2" placeholder="쿠키 키 입력(한글)" name="cookieKey" />
+       <input class="form-control mr-sm-2" placeholder="쿠키 값 입력(한글)" name="cookieVal"/>
+       <button class="btn btn-info" type="submit">쿠키값등록</button>
        <button class="btn btn-success" 
           data-toggle="modal" data-target="#exampleModalCenter"
            type="button">등록</button>

@@ -3,25 +3,25 @@
     import="java.util.*"
     import="backendweb.z01_vo.*"
     import="backendweb.d01_dao.*"
+    errorPage="a02_errorPage.jsp"
     %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="path" value="${pageContext.request.contextPath }"/>
-<fmt:requestEncoding value="utf-8"/>     
+<fmt:requestEncoding value="utf-8"/>    
+<%
+String name=null;
+log(name.toString());
+%> 
 <!DOCTYPE html>
 <%--
-# 쿠키의 encoding/ decoding 처리
-1. 쿠키는 2byte이상의 데이터를 저장하지 못한다.
-2. 그래서 한글의 경우 encoding 하여 저장 후, 다시 가져와서 확인할 때는
-	decoding하여 출력하여야한다.
-3. encoding 처리를 위한 코드
-	import java.net.URLEncoder
-	new Cookie(URLEncoding.encoding("키","utf-8"),
-				URLEncoding.encoding("값","utf-8"));
-4. decoding 처리를 위한 코드
-	import java.net.URLDecoder
-	String key=URLDecoder.decode(c1.getName(),"utf-8");
-	String val=URLDecoder.decode(c1.getValue(),"utf-8");
+a04_login.jsp 
+	에 id, pwd 입력하고, if(id==null)처리하지말고 바로
+	기능처리 메서드를 처리하여 예외를 호출 (id.toString())
+
+a05_errorPage.jsp 에러페이지로 지정
+	에러가 나왔을 때 화면처리..
+
  --%>
 <html>
 <head>
