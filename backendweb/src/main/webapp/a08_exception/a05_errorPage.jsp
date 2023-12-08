@@ -45,7 +45,7 @@
 </div>
 <div class="container">
 
-    <%if(exception!=null){ %>
+    
    <table class="table table-hover table-striped">
       <col width="25%">
       <col width="75%">
@@ -62,9 +62,6 @@
        </tr>
       
     </tbody>
-    <% }else{ %>
-    	<h3>에러없슴</h3>
-   <% } %>
    </table>    
     
 </div>
