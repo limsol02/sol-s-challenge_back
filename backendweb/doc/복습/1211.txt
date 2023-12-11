@@ -1,0 +1,180 @@
+### 1. JSP useBean 액션 태그
+1) JSP 페이지에서 Java 객체를 인스턴스화하고 참조하기 위해 어떤 액션 태그를 사용합니까? c
+   - a) `<jsp:setProperty>`
+   - b) `<jsp:getProperty>`
+   - c) `<jsp:useBean>`
+   - d) `<jsp:include>`
+   java Person p01 = new Person(); session.setAttribute("p01",p01);
+  = <jsp:useBean id="p01" class="@@.Person" scope="session"/>
+   
+2) `<jsp:useBean>` 태그의 `scope` 속성이 `page`로 설정되었을 때, 빈 객체의 유효 범위는 어디까지입니까? b
+   - a) 전체 어플리케이션
+   - b) 현재 페이지
+   - c) 세션
+   - d) 요청
+   jsp : 기본 메모리 할당 + scope를 통해서 시간적 범위 설정(page, request, session, application)
+### 2. 쿠키 (Cookies)
+3) 쿠키의 최대 텍스트 길이는 얼마입니까? b
+   - a) 4KB
+   - b) 2KB
+   - c) 10KB
+   - d) 16KB
+   쿠키 지속시간 설정 ck.setMaxAge(초단위);
+   쿠키를 삭제시 Cookie c1 = new Cookie("key","val");
+   			  c1.setMaxAge(0); response.addCookie(c1);
+
+### 3. JSTL
+5) JSTL에서 조건에 따라 다른 작업을 실행하기 위해 사용되는 태그는 무엇입니까? a
+   - a) `<c:if>`
+   - b) `<c:set>`
+   - c) `<c:forEach>`
+   - d) `<c:choose>`
+   
+   <c:if test="${비교|논리연산자}"> 하나의 조건식에서 사용
+   
+   <c:choose>
+   	<c:when test="${조건1}">조건 1일때 수행</c:when>
+   	<c:when test="${조건2}">조건 2일때 수행</c:when>
+   	<c:when test="${조건3}">조건 3일때 수행</c:when>
+   	<c:otherwise>위 나열된 조건 이외의 조건수행</c:otherwise>
+   </<c:choose>
+   
+
+6) `<c:forEach>` 태그의 기능은 무엇입니까? c
+   - a) 변수 설정
+   - b) 조건 검사
+   - c) 콜렉션을 통한 반복
+   - d) 오류 처리
+   콜렉션 : 배열/list/map/set 형태의 객체들 포함
+   <c:forEach var="emp" items="${empList}" varStautus="sts">
+   		<tr style="background:${sts.first or sts.last?'yellow':''}">
+   			<td>${sts.count}</td>
+   			<td>${emp.empno}</td>
+   			<td>${emp.ename}</td>
+   		</tr>
+   </c:forEach>
+   
+
+### 4. EL (Expression Language)
+7) EL에서 배열 또는 리스트의 특정 요소에 접근하기 위해 사용하는 기호는 무엇입니까? B
+   - a) `{}` 
+   - b) `[]`
+   - c) `()`
+   - d) `<>`
+   ${일반변수}
+   ${객체.property명}
+   ${[a,b,c]} 배열데이터 설정 활용
+   
+
+9) EL의 삼항 연산자 `?:`에서 조건이 참일 때 반환되는 값은 어느 위치에 있습니까? b
+   - a) 처음
+   - b) 중간
+   - c) 끝
+   - d) 연산자는 두 개의 값만을 가짐
+   
+   <c:if test="${not empty param.id}"> form의 id값이 입력 되었을때.
+	   <h2> 로그인 결과 :
+	   ${param.id=='himan' and param.pwd=='7777'?'로그인성공':'로그인실패'}
+	   --> id와 pwd 입력값을 기준으로 himan/7777 일 때, 로그인 성공 그 외에는 로그인 실패 표현
+	   </h2>
+	</c>
+   
+10) EL에서 논리적 'AND' 연산을 나타내는 연산자는 무엇입니까? b
+   - a) `&&`
+   - b)`and`
+   - c) `&`
+   - d) 둘 다 a와 b
+   and는 기본적으로 다 지원하나, &&의 경우 간혹 문제가 발생하여 escape 처리와 함께 하는경우도 있다.
+   이는 ognl이라는 방식의 코드체계의 특징이다. 추후에 spring 에서 mybatis framework에서도 사용한다. 
+   
+### 5. JSP & Servlets
+11) JSP 페이지에서 서블릿으로 제어를 넘기기 위해 사용되는 표준 액션 태그는 무엇입니까? a
+   - a) `<jsp:forward>`
+   - b) `<jsp:plugin>`
+   - c) `<jsp:include>`
+   - d) `<jsp:param>`
+   <jsp:forward> =>
+   RequsetDispatch rd = request.getRequestdispatch(페이지)
+   rd.forward(request,response);
+   
+12) 서블릿에서 쿠키를 생성하여 클라이언트에게 보내는 메서드는 무엇입니까? a
+   - a) `response.addCookie(Cookie cookie)`
+   - b) `request.setCookie(Cookie cookie)`
+   - c) `response.newCookie(Cookie cookie)`
+   - d) `request.getCookie(Cookie cookie)`
+   위 코드는 서버단에서 처리하여 보내는, 클라이언트단(브라우저)에서 수행하여 쿠키가 추가된다.
+   
+
+15) JSP에서 페이지 디렉티브를 사용하여 세션을 비활성화하려면 어떻게 해야 합니까? b
+   - a) `<%@ page session="true" %>`
+   - b) `<%@ page session="false" %>`
+   - c) `<%@ page disableSession="true" %>`
+   - d) `<%@ page enableSession="false" %>`
+   페이지마다 session 설정관련 페이지 directive의 default값은 
+   session="true" 이다. 그래서 session에 대한 설정을 하지 않더라도
+   session 처리가 된다.(대부분 일반적으로 session을 사용하기에)
+   명시적으로 session을 사용하지않게 하려면 session="false" 로 처리하면
+   해당 페이지는 세션을 사용하지 못한다. 즉, 비활성화된다. 
+
+16) JSTL의 `<c:out>` 태그가 하는 일은 무엇입니까? B
+   - a) 데이터를 콘솔로 출력합니다.
+   - b) HTML 페이지에서 데이터를 출력합니다.
+   - c) 데이터를 파일로 출력합니다.
+   - d) 데이터를 데이터베이스로 출력합니다.
+   1. 변수의 값 출력
+   <c:out value="${user.name}"/>
+   2. 화면에 문자열 출력
+   <c:out value="안녕하세요"/>
+   3. 기본값 설정
+   <c:out value="{user.name}" defaule="손님"/>
+   user.name의 값이 null일때 "손님"으로 처리
+
+17) `<jsp:useBean>`에서 bean의 속성 값을 설정하는 데 사용되는 태그는 무엇입니까? a
+   - a) `<jsp:setProperty>`
+   - b) `<jsp:getProperty>`
+   - c) `<jsp:property>`
+   - d) `<jsp:useProperty>`
+   
+   # 객체생성 및 저장 메서드 활용#
+   
+   <jsp:uesBean id="p01" class="vo.Person"/>
+   <jsp:setProperty name="p01" property="name" value="홍길동"/>
+   <jsp:setProperty name="p01" property="age" value="25"/>
+   ==> Person p01 = new Person();
+    p01.setName("홍길동");
+    p01.setAge(25);
+   ==> el
+   	${p01.setName("홍길동")}
+   	${p01.setAge(25)}
+   	
+   	#요청값 처리#
+   	
+   <input name="name" value="홍길동"/>
+   <input name="age" value="25"/> ==> form 화면 입력 후, submit 버튼 클릭
+   페이지?name=홍길동&age=25
+   	<jsp:setProperty name="p01" property="*"/>
+   ==> 이 코드로 아래와 같은 효과가 처리된다.(객체의 요청값으로 데이터 할당 처리)
+   el ${p01.setName(param.name)}
+   	  ${p01.setAge(param.age)}
+   
+
+19) 쿠키 값을 읽기 위해 서블릿에서 사용하는 메서드는 무엇입니까? a
+   - a) `request.getCookies()`
+   - b) `response.getCookies()`
+   - c) `request.readCookies()`
+   - d) `response.readCookies()`
+   쿠키를 생성해서 보내느 부분(서버) response
+   쿠키값이 생성되어 가지고 있는 부분(클라이언트-브라우저)
+   저장된 쿠키값을 보내어서 서버에 확인하는 부분(서버) request
+   Cookie[] cookies = request.getCookies();
+   for(Cookie ck : cookies) {
+   		ck.getName()
+   		ck.getValue()
+   }
+   
+
+20) EL에서 JavaBean의 property를 참조하기 위해 어떤 식을 사용합니까? a
+   - a) `${bean.property}`	p01.getName() ==> ${p01.name}
+   - b) `${bean[property]}`
+   - c) `${bean->property}`
+   - d) `${bean::property}`

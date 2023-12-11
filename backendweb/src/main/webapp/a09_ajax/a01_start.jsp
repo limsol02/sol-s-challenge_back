@@ -84,6 +84,7 @@
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://developers.google.com/web/ilt/pwa/working-with-the-fetch-api" type="text/javascript"></script>
 <script type="text/javascript">
+// row code  ==> libary/framework
    $(document).ready(function(){
       $("h2").click(function(){
     	  // XMLHttpRequest 객체 생성
@@ -91,7 +92,7 @@
     	  //alert("객체 생성 확인 : "+xhr);
     	  // 동기적 처리..
     	  // [주의] 주로 XMLHttpRequest 비동기가 목적이기에 비동기일때 true
-    	  // get/post 자원(서버자원) 비동기여부
+    	  // 	  get/post, 자원(서버자원), 비동기여부
     	  xhr.open("get","z01_data.jsp",false);
     	  xhr.send() // 요청값을 호출..
     	  alert("서버의 자원 받은 결과"+xhr.responseText)
@@ -99,6 +100,19 @@
     	  $("h3").text(xhr.responseText)
       })
    });
+   // ==> a01_start.jsp ==> XXX.html ==> 브라우저에 전달
+   // ==> XMLHttpRequest를 통해서 화면이 정지된 상태(화면이 리플레쉬 되지 않는 상태)로
+   //	서버에 있는 코드의 결과를 가져와서 출력 처리하는 형태
+   //	서버의 결과값을 가져올 때까지 아무 작업도 못하는 것을 동기방식
+   //	서버의 결과값을 가져올 때까지 다른 이벤트가 작업을 하다가 오면 처리하는 것을 비동기방식
+   //	비동기방식에는 특정 결과가 오는 것을 모니터링 하는 메서드가 있다.
+   
+   // [주의] XMLHttpRequest를 쓰면 무조건 비동기 방식을 쓰는 것이 아니라
+   //	기존의 서버에 있는 화면을 대체헤서 변경하는 것이 아닌 해당 코드는 js로 
+   //	html코드나 변수로 가져오는 것을 말한다.
+   
+   // z02_date.jsp에 좋아하느 과일을 입력하고 a02_callFruit.jsp를 통해서 클릭시, 
+   // z02_date.jsp에 있는 문자열인 과일명을 가져와서 화면에 출력하도록 하세요
 </script>
 </head>
 
