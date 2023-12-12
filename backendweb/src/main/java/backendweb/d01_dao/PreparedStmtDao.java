@@ -401,6 +401,28 @@ public class PreparedStmtDao {
 		return mem;
 	}
 	
+	
+	public boolean login(Member m) {
+		boolean isLog = false;
+		String sql = "SELECT * FROM member01 WHERE id=? and pwd=? ";
+		try (Connection con = DBCon.con(); PreparedStatement pstmt = con.prepareStatement(sql);) {
+			// 처리코드1
+			pstmt.setString(1, m.getId());
+			pstmt.setString(2, m.getPwd());
+			try (ResultSet rs = pstmt.executeQuery();) {
+				// 처리코드2
+				// 데이터가 있으면 true, 없으면 false
+				isLog = rs.next();
+			}
+		} catch (SQLException e) {
+			System.out.println("DB 에러:" + e.getMessage());
+		} catch (Exception e) {
+			System.out.println("일반 에러:" + e.getMessage());
+		}
+
+		return isLog;
+	}
+	
 	public List<Emp> getEmpListExp(String ename, String job) {
 		List<Emp> empList = new ArrayList<Emp>();
 		String sql = "SELECT *\r\n" + "FROM emp01\r\n" 

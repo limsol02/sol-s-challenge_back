@@ -190,6 +190,28 @@ public class MemberDao {
 		return delCnt;		
 	}
 	
+	
+	
+	public boolean ckMemberId(String id) {
+		boolean hasMember=false;
+		String sql = "SELECT * \r\n" + 
+					"FROM member01\r\n" + 
+					"WHERE id=? ";
+		try (Connection con = DBCon.con(); PreparedStatement pstmt = con.prepareStatement(sql);) {
+			// 처리코드1
+			pstmt.setString(1, id);
+			try (ResultSet rs = pstmt.executeQuery();) {
+				hasMember = rs.next();
+			}
+		} catch (SQLException e) {
+			System.out.println("DB 에러:" + e.getMessage());
+		} catch (Exception e) {
+			System.out.println("일반 에러:" + e.getMessage());
+		}		
+		return hasMember;
+	}
+	
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 

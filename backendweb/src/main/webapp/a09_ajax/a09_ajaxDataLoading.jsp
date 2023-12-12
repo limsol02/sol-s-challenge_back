@@ -10,7 +10,17 @@
 <fmt:requestEncoding value="utf-8"/>     
 <!DOCTYPE html>
 <%--
-
+# ajax를 통한 실시간 서버단 데이터 로딩 처리
+1. 비동기적으로 서버에 있는 데이터를 가지고 처리하는 것은
+	화면전한없이 데이터를 처리해주기에 기존 입력한 내용을 유지하면서 처리할 수 있는 장점이 있다. 
+2. 처리순서
+	1) 데이터로딩 부분
+		jsp로 요청값을 받아서 원하는 데이터를 로딩하는 처리를 하는 화면을 처리한다. 
+		-> import dao, vo, 
+		-> 필요로 하는 데이터나 화면 처리
+		
+	2) 메인 회면에서 특정한 이벤트에 의해서 데이터 요청값 확인 및 데이터 처리
+	
 
  --%>
 <html>
@@ -30,80 +40,27 @@
 <script src="https://developers.google.com/web/ilt/pwa/working-with-the-fetch-api" type="text/javascript"></script>
 <script type="text/javascript">
    $(document).ready(function(){
-     $("#infBtn").click(function(){
-    	 //alert("요청값 : "+$("form").serialize())
-    	 $.ajax({
-    		 url:"z07_data.jsp",
-    		 type:"get",
-    		 data:$("form").serialize(),
-    		 dataType:"text",
-    		 success:function(data){
-    			 alert(data)
-    			 $(".jumbotron").append(data)
-    		 },
-    		 error:function(err){
-    			 console.log(err)
-    		 }
-    		 
-    	 })
-     }) 
+      <%-- 
+      
+      --%>   
    });
-   
-   /*
-   a08_jqueryAjax.jsp 회원정보 : 아이디 패스워드 이름 권한 입력
-   서버에서 받은 tr을 하단 테이블의 tbody에 추가
-   z08_data.jsp 해당 데이터를 받아 <tr> <td> ${param.id}... 처리
-   */
-   
 </script>
 </head>
 
 <body>
 <div class="jumbotron text-center">
-  <h2>Jquery Ajax 호출</h2>
+  <h2>타이틀</h2>
 
 </div>
-<%--
-# jquery를 통한 ajax 처리
-1. jquery에서는 보다 간편한 속성설정 방식과 요청값 처리로 ajax를 처리하고 있다.
-
-2. 기본형식
-	1) $.ajax({속성:속성값, 속성:function(){}})
-		형식으로 ajax를 처리하고 있다.
-	
-	2) 주요 속성과 메서드
-		&.ajax({
-			url:요청자원의명,
-			
-			type:'get/post',
-			
-			data:'name=홍길동', // 요청값 처리형식 $("form").serialize(),
-			
-			##요청값 처리방식##
-			1. key=val
-			2. $("form").serialize()
-				form하위의 name, value 속성을 key=val 형식으로 변환시켜준다
-			3. json형식
-				{name:'홍길동',age:25}
-			
-			dataType:"json/text/xml" 결과값 형식을 지정 --> 대소문자 구분!
-			
-			success:function(data){ // 성공하였을때, 결과값
-				data : 서버에서 전송된 결과값을 받을 수 있다.
-			},
-			
-			error:function(err){
-				console.log(err) // 에러 처리 결과값을 받을 수 있다. 
-			}
-		})
- --%>
 <div class="container">
    <form id="frm01" class="form"  method="post">
      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-       <input class="form-control mr-sm-2" placeholder="물건명" name="name" />
-       <input class="form-control mr-sm-2" placeholder="가격" name="price" />
-       <input class="form-control mr-sm-2" placeholder="갯수" name="cnt" />
-       <button class="btn btn-info" type="button" id="infBtn">Search</button>
+       <input class="form-control mr-sm-2" placeholder="제목" />
+       <input class="form-control mr-sm-2" placeholder="내용" />
+       <button class="btn btn-info" type="submit">Search</button>
+       <button class="btn btn-success" 
+          data-toggle="modal" data-target="#exampleModalCenter"
+           type="button">등록</button>
     </nav>
    </form>
    <table class="table table-hover table-striped">

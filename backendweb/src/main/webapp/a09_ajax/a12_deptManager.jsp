@@ -30,80 +30,48 @@
 <script src="https://developers.google.com/web/ilt/pwa/working-with-the-fetch-api" type="text/javascript"></script>
 <script type="text/javascript">
    $(document).ready(function(){
-     $("#infBtn").click(function(){
-    	 //alert("요청값 : "+$("form").serialize())
-    	 $.ajax({
-    		 url:"z07_data.jsp",
-    		 type:"get",
-    		 data:$("form").serialize(),
-    		 dataType:"text",
-    		 success:function(data){
-    			 alert(data)
-    			 $(".jumbotron").append(data)
-    		 },
-    		 error:function(err){
-    			 console.log(err)
-    		 }
-    		 
-    	 })
-     }) 
+        
    });
-   
-   /*
-   a08_jqueryAjax.jsp 회원정보 : 아이디 패스워드 이름 권한 입력
-   서버에서 받은 tr을 하단 테이블의 tbody에 추가
-   z08_data.jsp 해당 데이터를 받아 <tr> <td> ${param.id}... 처리
-   */
-   
+   function 
 </script>
 </head>
 
 <body>
 <div class="jumbotron text-center">
-  <h2>Jquery Ajax 호출</h2>
+  <h2>부서정보관리(ajax)</h2>
 
 </div>
 <%--
-# jquery를 통한 ajax 처리
-1. jquery에서는 보다 간편한 속성설정 방식과 요청값 처리로 ajax를 처리하고 있다.
-
-2. 기본형식
-	1) $.ajax({속성:속성값, 속성:function(){}})
-		형식으로 ajax를 처리하고 있다.
+# ajax로 부서정보 처리
+1. list로 부터 등록, 상세화면(수정/삭제) ajax로 처리
+2. 주요파일 
+	1) a12_deptManager.jsp : 부서정보 메인화면
+	2) z12_deptList.jsp : 부서정보조회 list json 데이터 (ajax)
+	3) z13_deptInsert.jsp : 부서정보 등록처리 (ajax)
+	4) z14_deptDetail.jsp : 부서정보 상세 데이터 가져오기 처리 (ajax)
+	5) z15_deptUpt.jsp : 부서정보 수정처리 (ajax)
+	6) z16_deptDel.jsp : 부서정보 삭제처리 (ajax)
 	
-	2) 주요 속성과 메서드
-		&.ajax({
-			url:요청자원의명,
-			
-			type:'get/post',
-			
-			data:'name=홍길동', // 요청값 처리형식 $("form").serialize(),
-			
-			##요청값 처리방식##
-			1. key=val
-			2. $("form").serialize()
-				form하위의 name, value 속성을 key=val 형식으로 변환시켜준다
-			3. json형식
-				{name:'홍길동',age:25}
-			
-			dataType:"json/text/xml" 결과값 형식을 지정 --> 대소문자 구분!
-			
-			success:function(data){ // 성공하였을때, 결과값
-				data : 서버에서 전송된 결과값을 받을 수 있다.
-			},
-			
-			error:function(err){
-				console.log(err) // 에러 처리 결과값을 받을 수 있다. 
-			}
-		})
+	7) dao 파일 PreparedStmtDao
+	
+	// List<Dept> getDeptList(String name, String loc)
+	// int insertDept(Dept ins)
+	// int updateDept(Dept upt)
+	// int deleteDept(int deptno)
+	// Dept getDept(int deptno)
+	
+# 부서정보 리스트
+1. 
  --%>
 <div class="container">
    <form id="frm01" class="form"  method="post">
      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-       <input class="form-control mr-sm-2" placeholder="물건명" name="name" />
-       <input class="form-control mr-sm-2" placeholder="가격" name="price" />
-       <input class="form-control mr-sm-2" placeholder="갯수" name="cnt" />
-       <button class="btn btn-info" type="button" id="infBtn">Search</button>
+       <input class="form-control mr-sm-2" placeholder="부서이름" name="dname" />
+       <input class="form-control mr-sm-2" placeholder="지역" name="loc" />
+       <button class="btn btn-info" type="button" id="schBtn">검색</button>
+       <button class="btn btn-success" 
+          data-toggle="modal" data-target="#exampleModalCenter"
+           type="button">등록</button>
     </nav>
    </form>
    <table class="table table-hover table-striped">
