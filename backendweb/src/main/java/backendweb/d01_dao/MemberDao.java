@@ -63,6 +63,27 @@ public class MemberDao {
 		from member01
 		where mno = ?
 	*/	
+	
+	public boolean checkId(String id) {
+		boolean chId = false;
+		String sql = "select * " + "from member01 " + "where id= ? ";
+				
+		// try(객체처리-연결;대화;결과){} : try resource 구문 파일이나 DB연결 자동 자원해제..
+		try (Connection con = DBCon.con(); PreparedStatement pstmt = con.prepareStatement(sql);) {
+			pstmt.setString(1, id);
+			try (ResultSet rs = pstmt.executeQuery();) {
+				chId = rs.next();
+			}
+		} catch (SQLException e) {
+			System.out.println("DB 에러:" + e.getMessage());
+		} catch (Exception e) {
+			System.out.println("일반 에러:" + e.getMessage());
+		}
+		return chId;
+	}
+	
+	
+	
 	public int insertMember(Member ins) {
 		int insCnt =0;
 		String sql = "	INSERT INTO member01 values(mem_seq.nextval,\r\n"

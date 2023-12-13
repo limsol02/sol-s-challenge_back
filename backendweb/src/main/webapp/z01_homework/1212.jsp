@@ -33,7 +33,7 @@ JSON은 문자열 키에 ""를 사용해아하지만, JavaScript 객체에서는
 [1단계:개념] 3. 문자열 json를 객체형으로 변환해주는 방식이 3가지 언급하였다. 
 각각 기본 예제를 기준으로 메서드를 기술하세요.
 
-1.eval()
+1.eval() : 이 방법은 보안상의 이유로 권장되지 않습니다.
 var jsonString = '{"no": 1, "name": "홍길동", "id": "himan"}';
 var json = eval('(' + jsonString + ')');
 
@@ -45,7 +45,7 @@ var json = JSON.parse(jsonString);
 $.ajax({
 	url:"z01_data.jsp",
 	data:$("#frm01").serialize(),
-	dataType:"json",
+	dataType:"json", // json 객체로 변환되어 사용가능
 	success:function(data){console.log(data)},
 	error:function(err){console.log(err)},
 })

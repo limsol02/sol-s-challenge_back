@@ -12,8 +12,6 @@ import backendweb.z01_vo.Emp;
 import backendweb.z01_vo.EmpDTO;
 import backendweb.z01_vo.Member;
 
-
-
 /*
 import="backendweb.d01_dao.PreparedStmtDao"
 import="backendweb.d01_dao.*"
@@ -64,33 +62,33 @@ public class PreparedStmtDao {
 	}
 
 	public List<Dept> getDeptList(String dname, String loc) {
-	      List<Dept> dlist = new ArrayList<Dept>();
-	      String sql = "select deptno,dname,loc " + "from dept01 " + "where dname like ? " + " and loc like ? "
-	            + " order by deptno ";
-	      // try(객체처리-연결;대화;결과){} : try resource 구문 파일이나 DB연결 자동 자원해제..
-	      try (Connection con = DBCon.con(); PreparedStatement pstmt = con.prepareStatement(sql);) {
-	         pstmt.setString(1, "%" + dname + "%");
-	         pstmt.setString(2, "%" + loc + "%");
-	         try (ResultSet rs = pstmt.executeQuery();) {
-	            while (rs.next()) {
-	               dlist.add(new Dept(rs.getInt("deptno"), rs.getString("dname"), rs.getString("loc")));
-	            }
-	            System.out.println("데이터 건수:" + dlist.size());
-	         }
-	      } catch (SQLException e) {
-	         System.out.println("DB 에러:" + e.getMessage());
-	      } catch (Exception e) {
-	         System.out.println("일반 에러:" + e.getMessage());
-	      }
-	      return dlist;
-	   }
+		List<Dept> dlist = new ArrayList<Dept>();
+		String sql = "select deptno,dname,loc " + "from dept01 " + "where dname like ? " + " and loc like ? "
+				+ " order by deptno ";
+		// try(객체처리-연결;대화;결과){} : try resource 구문 파일이나 DB연결 자동 자원해제..
+		try (Connection con = DBCon.con(); PreparedStatement pstmt = con.prepareStatement(sql);) {
+			pstmt.setString(1, "%" + dname + "%");
+			pstmt.setString(2, "%" + loc + "%");
+			try (ResultSet rs = pstmt.executeQuery();) {
+				while (rs.next()) {
+					dlist.add(new Dept(rs.getInt("deptno"), rs.getString("dname"), rs.getString("loc")));
+				}
+				System.out.println("데이터 건수:" + dlist.size());
+			}
+		} catch (SQLException e) {
+			System.out.println("DB 에러:" + e.getMessage());
+		} catch (Exception e) {
+			System.out.println("일반 에러:" + e.getMessage());
+		}
+		return dlist;
+	}
+
 	/*
 	 * SELECT * FROM emp WHERE ename LIKE ? AND job LIKE ? AND deptno = ?
 	 */
 	public List<Emp> getEmpList(Emp sch) {
 		List<Emp> empList = new ArrayList<Emp>();
-		String sql = "SELECT *\r\n" + "FROM emp02\r\n" 
-		+ "WHERE ename LIKE ?\r\n" + "AND job LIKE ?\r\n ";
+		String sql = "SELECT *\r\n" + "FROM emp02\r\n" + "WHERE ename LIKE ?\r\n" + "AND job LIKE ?\r\n ";
 		// 기본값 0인경우 전체 검색이 필요하기에 0면 검색조건에서 제외
 		// sql 문과 pstmt에 처리..
 		if (sch.getDeptno() != 0)
@@ -271,10 +269,9 @@ public class PreparedStmtDao {
 
 	// INSERT INTO emp01 values(?,?,?,?, to_date(?,'YYYY-MM-DD'),?,?,?)
 	// dao.insertEmp01(new EmpDTO(1003,"하길동","대리",7799,"2023-11-01",3500,1000,20));
-	
+
 	// getDeptList insertDept
-	
-	
+
 	public int insertDept(Dept ins) {
 		int insCnt = 0;
 		String sql = "INSERT INTO dept01 values(?,?,?)";
@@ -400,8 +397,7 @@ public class PreparedStmtDao {
 
 		return mem;
 	}
-	
-	
+
 	public boolean login(Member m) {
 		boolean isLog = false;
 		String sql = "SELECT * FROM member01 WHERE id=? and pwd=? ";
@@ -422,15 +418,14 @@ public class PreparedStmtDao {
 
 		return isLog;
 	}
-	
+
 	public List<Emp> getEmpListExp(String ename, String job) {
 		List<Emp> empList = new ArrayList<Emp>();
-		String sql = "SELECT *\r\n" + "FROM emp01\r\n" 
-		+ "WHERE ename LIKE ?\r\n" + "AND job LIKE ?\r\n ";
+		String sql = "SELECT *\r\n" + "FROM emp01\r\n" + "WHERE ename LIKE ?\r\n" + "AND job LIKE ?\r\n ";
 		try (Connection con = DBCon.con(); PreparedStatement pstmt = con.prepareStatement(sql);) {
 			// 처리코드1
-			pstmt.setString(1, "%" +ename+ "%");
-			pstmt.setString(2, "%" +job+ "%");
+			pstmt.setString(1, "%" + ename + "%");
+			pstmt.setString(2, "%" + job + "%");
 			try (ResultSet rs = pstmt.executeQuery();) {
 				// 처리코드2
 				while (rs.next()) {
@@ -448,7 +443,43 @@ public class PreparedStmtDao {
 		return empList;
 	}
 
+	// deptno 체크
+	public boolean checkDeptno(int deptno) {
+		boolean chNo = false;
+		String sql = "select deptno,dname,loc " + "from dept01 " + "where deptno = ? ";
+				
+		// try(객체처리-연결;대화;결과){} : try resource 구문 파일이나 DB연결 자동 자원해제..
+		try (Connection con = DBCon.con(); PreparedStatement pstmt = con.prepareStatement(sql);) {
+			pstmt.setInt(1, deptno);
+			try (ResultSet rs = pstmt.executeQuery();) {
+				chNo = rs.next();
+			}
+		} catch (SQLException e) {
+			System.out.println("DB 에러:" + e.getMessage());
+		} catch (Exception e) {
+			System.out.println("일반 에러:" + e.getMessage());
+		}
+		return chNo;
+	}
 	
+	public boolean checkEmpno(int empno) {
+		boolean chNo = false;
+		String sql = "select * " + "from emp02 " + "where empno = ? ";
+				
+		// try(객체처리-연결;대화;결과){} : try resource 구문 파일이나 DB연결 자동 자원해제..
+		try (Connection con = DBCon.con(); PreparedStatement pstmt = con.prepareStatement(sql);) {
+			pstmt.setInt(1, empno);
+			try (ResultSet rs = pstmt.executeQuery();) {
+				chNo = rs.next();
+			}
+		} catch (SQLException e) {
+			System.out.println("DB 에러:" + e.getMessage());
+		} catch (Exception e) {
+			System.out.println("일반 에러:" + e.getMessage());
+		}
+		return chNo;
+	}
+
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -467,7 +498,6 @@ public class PreparedStmtDao {
 //			System.out.print(d.getDname() + "\t");
 //			System.out.print(d.getLoc() + "\n");
 //		}
-	
 
 	}
 
