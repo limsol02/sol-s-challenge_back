@@ -149,7 +149,7 @@ public class PreparedStmtDao {
 //	dao.insertEmp01(new EmpDTO(1003,"하길동","대리",7799,"2023-11-01",3500,1000,20));
 	public int insertEmp01(EmpDTO ins) {
 		int insCnt = 0;
-		String sql = "INSERT INTO emp01 values(?,?,?,?, " + "to_date(?,'YYYY-MM-DD'),?,?,?)";
+		String sql = "INSERT INTO emp02 values(?,?,?,?, " + "to_date(?,'YYYY-MM-DD'),?,?,?)";
 		try (Connection con = DBCon.con(); PreparedStatement pstmt = con.prepareStatement(sql);) {
 			con.setAutoCommit(false);
 			// 처리코드1
@@ -183,7 +183,7 @@ public class PreparedStmtDao {
 	 */
 	public EmpDTO getEmp(int empno) {
 		EmpDTO emp = null;
-		String sql = "SELECT e.*, to_char(hiredate,'YYYY-MM-DD') hiredatestr  \r\n" + "FROM emp01 e\r\n"
+		String sql = "SELECT e.*, to_char(hiredate,'YYYY-MM-DD') hiredatestr  \r\n" + "FROM emp02 e\r\n"
 				+ "WHERE empno=? ";
 		try (Connection con = DBCon.con(); PreparedStatement pstmt = con.prepareStatement(sql);) {
 			// 처리코드1
@@ -212,7 +212,7 @@ public class PreparedStmtDao {
 	 */
 	public int updateEmp01(EmpDTO upt) {
 		int uptCnt = 0;
-		String sql = "UPDATE emp01\r\n" + "    SET ename =?,\r\n" + "    	job = ?,\r\n" + "    	mgr = ?,\r\n"
+		String sql = "UPDATE emp02\r\n" + "    SET ename =?,\r\n" + "    	job = ?,\r\n" + "    	mgr = ?,\r\n"
 				+ "    	hiredate = to_date(?,'YYYY-MM-DD'),\r\n" + "    	sal = ?,\r\n" + "    	comm = ?,\r\n"
 				+ "    	deptno = ?\r\n" + "  WHERE empno = ? ";
 		try (Connection con = DBCon.con(); PreparedStatement pstmt = con.prepareStatement(sql);) {
@@ -245,7 +245,7 @@ public class PreparedStmtDao {
 
 	public int deleteEmp01(int empno) {
 		int delCnt = 0;
-		String sql = "delete from emp01 where empno=?";
+		String sql = "delete from emp02 where empno=?";
 		try (Connection con = DBCon.con(); PreparedStatement pstmt = con.prepareStatement(sql);) {
 			con.setAutoCommit(false);
 			// 처리코드1
@@ -323,7 +323,7 @@ public class PreparedStmtDao {
 
 	public int updateDept(Dept upt) {
 		int uptCnt = 0;
-		String sql = "update dept01\r\n" + " set dname = ?,\r\n" + "       loc = ?\r\n" + "where deptno =? ";
+		String sql = "update dept01\r\n" + " set dname = ?,\r\n" + "loc = ?\r\n" + "where deptno =? ";
 		try (Connection con = DBCon.con(); PreparedStatement pstmt = con.prepareStatement(sql);) {
 			con.setAutoCommit(false);
 			// 처리코드1
@@ -421,7 +421,7 @@ public class PreparedStmtDao {
 
 	public List<Emp> getEmpListExp(String ename, String job) {
 		List<Emp> empList = new ArrayList<Emp>();
-		String sql = "SELECT *\r\n" + "FROM emp01\r\n" + "WHERE ename LIKE ?\r\n" + "AND job LIKE ?\r\n ";
+		String sql = "SELECT *\r\n" + "FROM emp02\r\n" + "WHERE ename LIKE ?\r\n" + "AND job LIKE ?\r\n ";
 		try (Connection con = DBCon.con(); PreparedStatement pstmt = con.prepareStatement(sql);) {
 			// 처리코드1
 			pstmt.setString(1, "%" + ename + "%");
