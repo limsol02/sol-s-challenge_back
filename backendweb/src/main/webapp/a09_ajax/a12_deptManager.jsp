@@ -115,7 +115,9 @@
 							$("#frm02 [name=deptno]").val("").focus()
 						}else{
 							alert("부서번호 등록 가능합니다!")
-							$("#ckNo").val("Y")
+							$("[name=ckNo]").val("Y")
+							// 부서번호 중복을 체크해서 중복이 안 될때에만 등록이 가능하게 hidden으로 설정 처리..
+							// 중복확인이 완료되었을 때, 더 이상 변경하지 못하게 처리..
 						}
 					},
 					error:function(err){
@@ -126,7 +128,7 @@
 		})
 		$("#regBtn").click(function(){
 			//alert( $("#frm02").serialize() )
-			if($("#ckNo").val()!="Y"){
+			if($("[name=ckNo]").val()!="Y"){
 				alert("부서번호 중복 체크 하셔야 등록가능합니다.")
 				return;
 			}
@@ -139,7 +141,7 @@
 						var rcnt = rs.insDept
 						if(rcnt>0){
 							alert("등록 성공")
-							search()
+							search() // 등록된 내용 재검색ㄴ
 							$("#frm02")[0].reset()
 							if(!confirm("계속 등록하시겠습니까?")){
 								$("#clsBtn").click() // 창닫기 실행	
@@ -166,6 +168,7 @@
 					data:$("#frm02").serialize(),
 					dataType:"json",
 					success:function(dept){
+					// 
 						alert(dept.uptCnt)
 						if(dept.uptCnt>0){
 							search()
@@ -192,6 +195,8 @@
 					data:"deptno="+delNo,
 					dataType:"json",
 					success:function(dept){
+						// {"deptno":10,"danem":"인사","loc":"서울"}
+						// ${dao.}
 						alert(dept.delCnt)
 						if(dept.delCnt>0){
 							search()
@@ -220,7 +225,7 @@
 		$.ajax({
 			url:"z12_deptList.jsp",
 			data:$("#frm01").serialize(),
-			dataType:"json",
+			dataType:"json", // 문자열 json 데이터 ==> 객체형으로 변환
 			success:function(deptList){
 				console.log(deptList)
 				var deptHTML =""
@@ -358,7 +363,7 @@
 								<input type="text" class="form-control" 
 									placeholder="부서번호 enter입력시 중복확인"
 									name="deptno">
-								<input type="hidden" id="ckNo" value="N"/>	
+								<input type="hidden" name="ckNo" value="N"/>	
 							</div>
 						</div>
 						<div class="row">	
