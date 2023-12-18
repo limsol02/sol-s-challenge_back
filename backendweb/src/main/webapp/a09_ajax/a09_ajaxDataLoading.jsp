@@ -15,11 +15,39 @@
 	화면전한없이 데이터를 처리해주기에 기존 입력한 내용을 유지하면서 처리할 수 있는 장점이 있다. 
 2. 처리순서
 	1) 데이터로딩 부분
-		jsp로 요청값을 받아서 원하는 데이터를 로딩하는 처리를 하는 화면을 처리한다. 
-		-> import dao, vo, 
-		-> 필요로 하는 데이터나 화면 처리
+		- dao 객체 기능 메서드 추가
+		[ex] public boolean ckMemberId(String id)
 		
+		- 요청값 및 데이터 로딩 처리 jsp 구현 
+		jsp로 요청값을 받아서 원하는 데이터를 로딩하는 처리를 하는 화면을 처리한다. 
+		-> import dao, vo
+		<jsp:useBean id="dao" class="backendweb.d01_dao.MemberDao"/>
+		{"hasMember":${dao.ckMemberId(param.id)}}
+			 
+		- 필요로 하는 데이터나 화면 처리
+			실행을 통해서 요청값으로 해당 id로 데이터가 있는지 여부 확인
+			http://localhost:7080/backendweb/a09_ajax/z10_checkData.jsp?id=himan
+			{"hasMember":true}
+	
 	2) 메인 회면에서 특정한 이벤트에 의해서 데이터 요청값 확인 및 데이터 처리
+		- 기본 화면 구현
+		id [  ] [중복확인]
+		
+		- 이벤트에 의해 ajax 호출 처리
+		$("#checkIdBtn")click(function(){ // 이벤트 처리
+			var idVal = $("[name=id]").val()
+			$.ajax({
+				url:"z10_checkData.jsp",
+				data:"id="+idVal,
+				dataType:"json",
+				success:function(data){
+					console.log(data.hasMember)
+				},
+				error:function(err){
+					console.log(err)
+				}
+			})
+		})
 	
 
  --%>

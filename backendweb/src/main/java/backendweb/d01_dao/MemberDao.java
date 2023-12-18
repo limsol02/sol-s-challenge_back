@@ -112,6 +112,7 @@ public class MemberDao {
 		
 		return insCnt;
 	}
+	
 	public Member getMember(int mno) {
 		Member mem = null;
 		String sql = "SELECT * \r\n" + 
