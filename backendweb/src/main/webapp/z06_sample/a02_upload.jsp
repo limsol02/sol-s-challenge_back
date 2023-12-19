@@ -49,7 +49,7 @@
 	<div class="jumbotron text-center">
 		<h2>파일업로드결과</h2>
 <%
-String saveDirectory = "C:/b01_javaexp/workspace/backendweb/src/main/webapp/Uploads/";///application.getRealPath("C:/b01_javaexp/workspace/backendweb/src/main/webapp/Uploads/");
+String saveDirectory = "C:/b01_javaexp/workspace/sol-s-challenge_back/backendweb/src/main/webapp/Uploads/";///application.getRealPath("C:/b01_javaexp/workspace/backendweb/src/main/webapp/Uploads/");
 System.out.println("업로드 경로");
 System.out.println(saveDirectory);
 int maxPostSize = 1024 * 100000; /* 1MB */
@@ -65,7 +65,7 @@ try {
 }
 %>
 	<%=fileName %>업로드<br>
-	<img src="${path}/Uploads/happyStudent.png" width="300" height="200">
+	<img src="${path}/Uploads/<%=fileName %>" width="300" height="200">
 	
 	</div>
 
